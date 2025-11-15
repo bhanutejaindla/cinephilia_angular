@@ -1,0 +1,27 @@
+.movie-card {
+  width: 160px;
+  margin: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.movie-card img {
+  width: 160px;
+  height: 230px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.4);
+}
+
+.details h4 {
+  font-size: 14px;
+  margin: 6px 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.details p {
+  font-size: 12px;
+  color: #ccc;
+}

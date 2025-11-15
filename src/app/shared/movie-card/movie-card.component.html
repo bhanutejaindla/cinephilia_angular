@@ -1,0 +1,12 @@
+<div class="movie-card">
+  <img [src]="movie.poster" [alt]="movie.title">
+
+  <div class="details">
+    <h4>{{ movie.title }}</h4>
+    <p>
+      ⭐ {{ movie.rating }}/10 &nbsp; | &nbsp;
+      {{ movie.duration }} &nbsp; | &nbsp;
+      {{ movie.certification }}
+    </p>
+  </div>
+</div>

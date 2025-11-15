@@ -1,0 +1,115 @@
+.payment-root {
+  min-height: 100vh;
+  background: #070707;
+  color: white;
+  font-family: Poppins, sans-serif;
+}
+
+.topbar {
+  background: #0d0d0d;
+  padding: 14px 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.payment-main {
+  display: flex;
+  gap: 24px;
+  padding: 28px;
+}
+
+.left-col {
+  flex: 1;
+  background: rgba(255,255,255,0.02);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.right-col {
+  width: 360px;
+  background: rgba(255,255,255,0.03);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  margin-top: 12px;
+  font-size: 18px;
+}
+
+.see-all {
+  background: transparent;
+  color: #ffdd99;
+  border: none;
+  cursor: pointer;
+}
+
+.payment-method {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buy-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px;
+  background: #ff3b3b;
+  border: none;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.buy-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.disclaimer {
+  margin-top: 12px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* POPUP STYLES */
+.payment-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  background: #222;
+  padding: 20px;
+  width: 300px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.popup-content button {
+  width: 100%;
+  padding: 10px;
+  background: #444;
+  border: none;
+  color: white;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close {
+  background: #ff3b3b;
+}

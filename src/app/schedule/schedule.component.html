@@ -1,0 +1,54 @@
+<div class="schedule-root">
+
+  <div class="schedule-main">
+    <!-- LEFT: list of shows -->
+    <div class="left-col">
+      <h3>Choose Schedule</h3>
+
+      <!-- Date picker (horizontal scroll) -->
+      <div class="date-strip">
+        <button *ngFor="let d of dates" (click)="onDateChange(d)" [class.active]="d===selectedDate">
+          {{ d }}
+        </button>
+      </div>
+
+      <!-- Location select -->
+      <div class="filters">
+        <label>Location</label>
+        <select [(ngModel)]="selectedLocation" (change)="onLocationChange(selectedLocation)">
+          <option *ngFor="let l of locations" [ngValue]="l">{{ l }}</option>
+        </select>
+      </div>
+
+      <!-- Cinemas grouped -->
+      <div *ngFor="let block of groupedByCinema" class="cinema-block">
+        <h4>{{ block.cinema }} — {{ selectedLocation }}</h4>
+        <div *ngFor="let s of block.shows" class="show-row">
+          <div class="studio">{{ s.classLabel }}</div>
+          <div class="times">
+            <button (click)="selectShow(s)" [class.selected]="selectedShow?.showId === s.showId">
+              {{ s.time }}
+            </button>
+          </div>
+          <div class="price">Rs. {{ s.price }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: movie details & summary -->
+    <aside class="right-col">
+      <div class="poster">
+        <img [src]="movie?.poster" [alt]="movie?.title">
+      </div>
+      <div class="movie-meta">
+        <h3>{{ movie?.title }}</h3>
+        <p><strong>Genre:</strong> {{ movie?.genre }}</p>
+        <p><strong>Duration:</strong> {{ movie?.duration }}</p>
+        <p><strong>Selected:</strong> {{ selectedShow ? (selectedShow.cinema + ' | ' + selectedShow.time + ' | ' + selectedShow.classLabel) : 'None' }}</p>
+      </div>
+
+      <button class="book-btn" (click)="bookNow()" [disabled]="!selectedShow">BOOK NOW</button>
+    </aside>
+  </div>
+ 
+</div>

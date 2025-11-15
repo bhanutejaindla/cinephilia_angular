@@ -1,0 +1,36 @@
+<div class="signin-container">
+
+  <!-- LEFT SIDE (BACKGROUND + LOGO) -->
+  <div class="left-panel">
+    <div class="logo">Cinemania<br>Delight</div>
+  </div>
+
+  <!-- RIGHT SIDE PANEL -->
+  <div class="form-panel">
+    <h2>SIGN IN</h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <label>Enter Phone Number</label>
+      <input type="text" placeholder="+91 | 9876543210" formControlName="phone">
+      <p *ngIf="f['phone'].touched && f['phone'].invalid">Invalid phone number</p>
+
+      <label>Password</label>
+      <div class="password-box">
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password">
+        <button type="button" (click)="togglePass()">👁</button>
+      </div>
+
+      <p *ngIf="error" class="error-text">{{ error }}</p>
+
+      <button class="signin-btn" type="submit">SIGN IN</button>
+
+    </form>
+
+    <div class="signup-link">
+      <a routerLink="/sign-up">Sign Up ?</a>
+    </div>
+
+  </div>
+
+</div>

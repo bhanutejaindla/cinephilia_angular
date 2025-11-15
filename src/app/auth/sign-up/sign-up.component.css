@@ -1,0 +1,123 @@
+/* Main container (full page) */
+.signup-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+}
+
+/* LEFT SIDE IMAGE AREA */
+.left-panel {
+  flex: 1;
+  background-image: url('/assets/images/cinema-bg.jpg'); /* Add your background image here */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Logo text */
+.logo {
+  font-size: 40px;
+  font-weight: 700;
+  color: white;
+  text-align: center;
+  letter-spacing: 2px;
+  line-height: 40px;
+}
+
+/* RIGHT SIDE FORM PANEL */
+.form-panel {
+  width: 420px;
+  background: rgba(30, 30, 30, 0.9);
+  padding: 40px;
+  color: white;
+  border-radius: 8px;
+  margin-right: 60px;
+  align-self: center;
+}
+
+.form-panel h2 {
+  margin-bottom: 20px;
+  font-size: 26px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0 12px 0;
+  border: none;
+  border-bottom: 1px solid #777;
+  background: transparent;
+  color: white;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Error text */
+p {
+  font-size: 12px;
+  color: #ff4b4b;
+  margin-top: -6px;
+}
+
+/* Password input with eye icon */
+.password-box {
+  display: flex;
+  align-items: center;
+}
+
+.password-box input {
+  flex: 1;
+}
+
+.password-box button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Signup Button */
+.signup-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  border: none;
+  background: #ff3b3b;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background: #e32f2f;
+}
+
+/* Signin link */
+.signin-link {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.signin-link a {
+  color: #d6d6d6;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.signin-link a:hover {
+  color: white;
+}

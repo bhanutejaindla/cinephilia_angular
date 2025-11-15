@@ -1,0 +1,64 @@
+<div class="home-container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="brand">Cinemania Delight</div>
+
+    <div class="search">
+      <input [(ngModel)]="searchTerm" (input)="searchMovies()" placeholder="Search movies...">
+    </div>
+    <div class="profile">A</div>
+  </header>
+
+  <main>
+
+    <!-- FILTERED RESULTS -->
+    <section *ngIf="filtered.length">
+      <h3>Filtered</h3>
+      <div class="carousel">
+        <app-movie-card
+          *ngFor="let movie of filtered"
+          [movie]="movie"
+          (click)="openMovie(movie)"
+        ></app-movie-card>
+      </div>
+    </section>
+
+    <!-- NOW SHOWING -->
+    <section>
+      <h3>Now Showing</h3>
+      <div class="carousel">
+        <app-movie-card
+          *ngFor="let movie of nowShowing"
+          [movie]="movie"
+          (click)="openMovie(movie)"
+        ></app-movie-card>
+      </div>
+    </section>
+
+    <!-- SPOTLIGHT -->
+    <section>
+      <h3>Spotlight</h3>
+      <div class="carousel">
+        <app-movie-card
+          *ngFor="let movie of spotlight"
+          [movie]="movie"
+          (click)="openMovie(movie)"
+        ></app-movie-card>
+      </div>
+    </section>
+
+    <!-- COMING SOON -->
+    <section>
+      <h3>Coming Soon</h3>
+      <div class="carousel">
+        <app-movie-card
+          *ngFor="let movie of comingSoon"
+          [movie]="movie"
+          (click)="openMovie(movie)"
+        ></app-movie-card>
+      </div>
+    </section>
+
+  </main>
+</div>

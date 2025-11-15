@@ -1,0 +1,99 @@
+<div class="payment-root">
+
+  
+
+  <div class="payment-main">
+
+    <!-- LEFT SIDE -->
+    <div class="left-col">
+
+      <h2>PAYMENT CONFIRMATION</h2>
+      <p>Confirm payment for the seats you ordered.</p>
+
+      <div class="section">
+        <h3>{{ booking?.show?.cinema }}</h3>
+
+        <p>{{ booking?.show?.date }} | {{ booking?.show?.time }}</p>
+
+        <p>Class: {{ booking?.show?.studio }}</p>
+
+        <p>
+          Tickets ({{ booking?.selectedSeats?.length }}):
+          {{ booking?.selectedSeats?.join(', ') }}
+        </p>
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <aside class="right-col">
+
+      <h3>Order Summary</h3>
+
+      <div class="summary-row">
+        <span>REGULAR SEAT</span>
+        <span>Rs. {{ booking?.show?.price }}</span>
+      </div>
+
+      <div class="summary-row">
+        <span>SERVICE FEE</span>
+        <span>Rs. 2000</span>
+      </div>
+
+      <div class="summary-row promo">
+        <span>PROMO</span>
+        <span>- Rs. 0</span>
+      </div>
+
+      <hr>
+
+      <div class="summary-total">
+        <span>Total Pay</span>
+        <span>Rs. {{ (booking?.total || 0) + 2000 }}</span>
+      </div>
+
+      <div class="payment-method">
+        <span>Payment Method</span>
+        <button class="see-all" (click)="openPaymentPopup()">See All</button>
+      </div>
+
+      <p *ngIf="selectedPayment" class="selected-method">
+        Selected: {{ selectedPayment }}
+      </p>
+
+      <button
+        class="buy-btn"
+        [disabled]="!selectedPayment"
+        (click)="buyTickets()"
+      >
+        BUY TICKETS
+      </button>
+
+      <p class="disclaimer">
+        Ticket purchase cannot be cancelled.
+      </p>
+
+    </aside>
+
+  </div>
+
+  <!-- PAYMENT POPUP -->
+  <div class="payment-popup" *ngIf="showPopup">
+    <div class="popup-content">
+
+      <h3>Select Payment Method</h3>
+
+      <button
+        *ngFor="let p of paymentOptions"
+        (click)="choosePayment(p)"
+      >
+        {{ p }}
+      </button>
+
+      <button class="close" (click)="showPopup = false">Close</button>
+
+    </div>
+  </div>
+
+
+</div>
