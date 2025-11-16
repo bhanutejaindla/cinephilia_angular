@@ -10,40 +10,45 @@ export const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'home', component: HomeComponent },
+
+  // ⭐ Needed for Schedule view
   { path: 'schedule/:id', component: ScheduleComponent },
+
+  // ⭐ Correct route for Seats page
   { path: 'seats/:id', component: SeatsComponent },
+
   {
     path: 'payment-confirmation',
     loadComponent: () =>
-        import('./payment/payment-confirmation/payment-confirmation.component')
+      import('./payment/payment-confirmation/payment-confirmation.component')
         .then(m => m.PaymentConfirmationComponent)
   },
 
   {
     path: 'payment-success',
     loadComponent: () =>
-        import('./payment/payment-success/payment-success.component')
+      import('./payment/payment-success/payment-success.component')
         .then(m => m.PaymentSuccessComponent)
   },
+
   {
-  path: 'my-tickets',
-  loadComponent: () =>
-    import('./tickets/my-tickets/my-tickets.component')
-      .then(c => c.MyTicketsComponent)
-},
+    path: 'my-tickets',
+    loadComponent: () =>
+      import('./tickets/my-tickets/my-tickets.component')
+        .then(c => c.MyTicketsComponent)
+  },
 
-{
-  path: 'transactions',
-  loadComponent: () =>
-    import('./tickets/transaction-list/transaction-list.component')
-      .then(c => c.TransactionListComponent)
-},
-{
-  path: 'transaction/:id',
-  loadComponent: () =>
-    import('./tickets/transaction-detail/transaction-detail.component')
-      .then(m => m.TransactionDetailComponent)
-},
+  {
+    path: 'transactions',
+    loadComponent: () =>
+      import('./tickets/transaction-list/transaction-list.component')
+        .then(c => c.TransactionListComponent)
+  },
 
-
+  {
+    path: 'transaction/:id',
+    loadComponent: () =>
+      import('./tickets/transaction-detail/transaction-detail.component')
+        .then(m => m.TransactionDetailComponent)
+  }
 ];

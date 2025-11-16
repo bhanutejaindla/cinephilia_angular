@@ -1,54 +1,97 @@
-<div class="schedule-root">
+<app-navbar></app-navbar>
 
-  <div class="schedule-main">
-    <!-- LEFT: list of shows -->
-    <div class="left-col">
-      <h3>Choose Schedule</h3>
+<div class="page-container">
 
-      <!-- Date picker (horizontal scroll) -->
-      <div class="date-strip">
-        <button *ngFor="let d of dates" (click)="onDateChange(d)" [class.active]="d===selectedDate">
-          {{ d }}
-        </button>
-      </div>
+  <!-- LEFT PANEL -->
+  <div class="left-panel">
 
-      <!-- Location select -->
-      <div class="filters">
-        <label>Location</label>
-        <select [(ngModel)]="selectedLocation" (change)="onLocationChange(selectedLocation)">
-          <option *ngFor="let l of locations" [ngValue]="l">{{ l }}</option>
-        </select>
-      </div>
+    <h2>SCHEDULES</h2>
 
-      <!-- Cinemas grouped -->
-      <div *ngFor="let block of groupedByCinema" class="cinema-block">
-        <h4>{{ block.cinema }} — {{ selectedLocation }}</h4>
-        <div *ngFor="let s of block.shows" class="show-row">
-          <div class="studio">{{ s.classLabel }}</div>
-          <div class="times">
-            <button (click)="selectShow(s)" [class.selected]="selectedShow?.showId === s.showId">
-              {{ s.time }}
-            </button>
-          </div>
-          <div class="price">Rs. {{ s.price }}</div>
-        </div>
-      </div>
+    <!-- DATE SELECTOR -->
+    <div class="dates">
+      <button *ngFor="let d of dates"
+              [class.active]="d.full === selectedDate"
+              (click)="selectedDate = d.full">
+        {{ d.label }}
+      </button>
     </div>
 
-    <!-- RIGHT: movie details & summary -->
-    <aside class="right-col">
-      <div class="poster">
-        <img [src]="movie?.image" [alt]="movie?.title">
-      </div>
-      <div class="movie-meta">
-        <h3>{{ movie?.title }}</h3>
-        <p><strong>Genre:</strong> {{ movie?.genre }}</p>
-        <p><strong>Duration:</strong> {{ movie?.duration }}</p>
-        <p><strong>Selected:</strong> {{ selectedShow ? (selectedShow.cinema + ' | ' + selectedShow.time + ' | ' + selectedShow.classLabel) : 'None' }}</p>
+    <!-- LOCATION FILTER -->
+    <select>
+      <option>Jakarta</option>
+    </select>
+
+    <!-- THEATRE LIST -->
+    <div class="theatre" *ngFor="let t of theatres">
+
+      <h3>{{ t.name }}</h3>
+      <p class="loc">📍 {{ t.location }}</p>
+
+      <!-- SHOWTIME GROUPS -->
+      <div class="showtype" *ngFor="let s of t.showtimes">
+
+        <div class="type-row">
+          <span class="type">{{ s.type }}</span>
+          <span class="price">Rp. {{ s.price_min || s.price }} - {{ s.price_max || s.price }}</span>
+        </div>
+
+        <div class="time-buttons">
+          <button *ngFor="let tm of s.times"
+                  [class.active]="selectedShowtime?.time === tm"
+                  (click)="selectShowtime(t, s, tm)">
+            {{ tm }}
+          </button>
+        </div>
+
       </div>
 
-      <button class="book-btn" (click)="bookNow()" [disabled]="!selectedShow">BOOK NOW</button>
-    </aside>
+    </div>
   </div>
- 
+
+  <!-- RIGHT PANEL -->
+  <!-- <div class="right-panel">
+
+    <img src="assets/images/movie-poster.png" class="poster">
+
+    <h2>SPIDERMAN: NO WAY HOME</h2>
+
+    <p><strong>Cinema:</strong> {{ selectedShowtime?.theatre }}</p>
+    <p><strong>Date:</strong> {{ selectedShowtime?.date }}</p>
+    <p><strong>Time:</strong> {{ selectedShowtime?.time }}</p>
+    <p><strong>Class:</strong> {{ selectedShowtime?.type }}</p>
+
+    <button class="book-btn" [disabled]="!selectedShowtime" (click)="bookNow()">
+      BOOK NOW
+    </button>
+  </div> -->
+
+  <div class="right-panel" *ngIf="movie">
+
+  <!-- Dynamic Poster -->
+  <img [src]="movie.image" class="poster">
+
+  <h2>{{ movie.title }}</h2>
+
+  <p><strong>Genre:</strong> {{ movie.genre.join(', ') }}</p>
+  <p><strong>Duration:</strong> {{ movie.duration }}</p>
+  <p><strong>Director:</strong> {{ movie.director }}</p>
+  <p><strong>Rating:</strong> {{ movie.certification }}</p>
+
+  <hr style="opacity:0.2; margin: 15px 0;">
+
+  <!-- Show summary -->
+  <p><strong>Cinema:</strong> {{ selectedShowtime?.theatre || '--' }}</p>
+  <p><strong>Date:</strong> {{ selectedShowtime?.date || '--' }}</p>
+  <p><strong>Time:</strong> {{ selectedShowtime?.time || '--' }}</p>
+  <p><strong>Class:</strong> {{ selectedShowtime?.type || '--' }}</p>
+
+  <button class="book-btn" [disabled]="!selectedShowtime" (click)="bookNow()">
+    BOOK NOW
+  </button>
+
 </div>
+
+
+</div>
+
+<app-footer></app-footer>

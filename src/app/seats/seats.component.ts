@@ -9,17 +9,19 @@ import { FooterComponent } from '../shared/footer/footer.component';
 @Component({
   selector: 'app-seats',
   standalone: true,
-  imports: [CommonModule,NavbarComponent,FooterComponent],
+  imports: [CommonModule, NavbarComponent, FooterComponent],
   templateUrl: './seats.component.html',
   styleUrls: ['./seats.component.css']
 })
 export class SeatsComponent {
 
-  showId = '';
+  movieId = '';
+  schedule: any = null;
+  movie: any = null;
+
   seats: any[] = [];
   selected: string[] = [];
   pricePerSeat = 0;
-  booking: any = null;
 
   constructor(
     private seatService: SeatService,
@@ -29,24 +31,25 @@ export class SeatsComponent {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(pm => {
-  const id = pm.get('id');
 
-  if (!id) {
-    this.router.navigate(['/home']);
-    return;
-  }
+    // 1️⃣ Read movie ID from URL
+    this.movieId = this.route.snapshot.paramMap.get('id') || '';
 
-  this.showId = id;
-  this.booking = this.bookingService.getBooking();
-  this.pricePerSeat = this.booking?.show?.price || 150000;
-  this.loadSeats();
-});
+    // 2️⃣ Read schedule + movie from navigation state
+    const data = history.state;
 
-  }
+    if (!data || !data.schedule || !data.movie) {
+      this.router.navigate(['/home']);
+      return;
+    }
 
-  loadSeats() {
-    this.seats = this.seatService.getLayoutForShow(this.showId);
+    this.schedule = data.schedule;
+    this.movie = data.movie;
+
+    this.pricePerSeat = this.schedule.price;
+
+    // 3️⃣ Load seats for this show
+    this.seats = this.seatService.getLayoutForShow(this.schedule.time);
   }
 
   isBooked(s: any) { return s.status === 'booked'; }
@@ -54,23 +57,20 @@ export class SeatsComponent {
 
   toggleSeat(s: any) {
     if (s.status === 'booked') return;
+
     if (this.isSelected(s.id)) {
       this.selected = this.selected.filter(x => x !== s.id);
     } else {
       this.selected.push(s.id);
     }
-    this.bookingService.setSeats(this.selected);
-    this.updateTotal();
-  }
 
-  updateTotal() {
     const total = this.selected.length * this.pricePerSeat;
+    this.bookingService.setSeats(this.selected);
     this.bookingService.setTotal(total);
   }
 
   returnBack() {
-    // navigate back to schedule to change show
-    this.router.navigate(['/schedule', this.booking?.movieId || '']);
+    this.router.navigate(['/schedule', this.movieId]);
   }
 
   confirm() {
@@ -79,14 +79,15 @@ export class SeatsComponent {
       return;
     }
 
-    // save seats
-    this.seatService.bookSeats(this.showId, this.selected);
+    this.seatService.bookSeats(this.schedule.time, this.selected);
 
-    // update booking summary
-    this.bookingService.setSeats(this.selected);
-    this.bookingService.setTotal(this.selected.length * this.pricePerSeat);
-
-    // redirect to payment confirmation
-    this.router.navigate(['/payment-confirmation']);
-}
+    this.router.navigate(['/payment-confirmation'], {
+      state: {
+        schedule: this.schedule,
+        movie: this.movie,
+        seats: this.selected,
+        total: this.selected.length * this.pricePerSeat
+      }
+    });
+  }
 }

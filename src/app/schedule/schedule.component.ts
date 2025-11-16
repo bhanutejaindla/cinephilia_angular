@@ -1,178 +1,89 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router, ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-
-import { ScheduleService } from '../core/schedule.service';
-import { ShowTime } from '../core/showtime.model';
+import { TheatreService } from '../core/theatre.service';
 import { MovieService } from '../core/movie.service';
-import { BookingService } from '../core/booking.service';
-
-import { Movie } from '../core/movie.model';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
-
-
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, NavbarComponent, FooterComponent, FormsModule],
   templateUrl: './schedule.component.html',
   styleUrls: ['./schedule.component.css']
 })
 export class ScheduleComponent {
 
-  movieId = '';
-  movie: Movie | null = null;
-
-  dates: string[] = [];
+  movieId: any;
+  movie: any;
+  theatres: any[] = [];
+  dates: any[] = [];
   selectedDate = '';
-
-  locations: string[] = ['Jakarta', 'Mumbai'];
-  selectedLocation = 'Jakarta';
-
-  shows: ShowTime[] = [];
-  groupedByCinema: { cinema: string, shows: ShowTime[] }[] = [];
-
-  selectedShow: any = null;
+  selectedShowtime: any = null;
 
   constructor(
-    private scheduleService: ScheduleService,
+    private theatreService: TheatreService,
     private movieService: MovieService,
-    private bookingService: BookingService,
-    private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(pm => {
-      const id = pm.get('id');
+    this.movieId = this.route.snapshot.paramMap.get('id');
 
-      if (id) {
-        this.movieId = id;
-        this.bookingService.setMovieId(id);
-      }
-
-      this.loadMovie();
-      this.loadDates();
+    // Load movie details
+    this.movieService.getById(this.movieId).subscribe(m => {
+      this.movie = m;
     });
+
+    // Load theatres
+    this.theatreService.getTheatres().subscribe(t => {
+      this.theatres = t;
+    });
+
+    this.generateDates();
   }
 
-  // --------------------------
-  // Load Movie details (title, poster, etc.)
-  // --------------------------
-  loadMovie() {
-    this.movieService.getAll().subscribe((list: Movie[]) => {
-      const found = list.find(m => m.id === this.movieId);
-      this.movie = found || null;
+  generateDates() {
+    const today = new Date();
+    for (let i = 0; i < 7; i++) {
+      const d = new Date(today);
+      d.setDate(today.getDate() + i);
 
-      if (this.movie) {
-        this.bookingService.setMovieData(this.movie);
-      }
-    });
-  }
-
-  // --------------------------
-  // Load available dates
-  // --------------------------
-  loadDates() {
-    this.scheduleService.getDatesForMovie(this.movieId).subscribe(d => {
-      this.dates = d;
-      if (d.length > 0) {
-        this.selectedDate = d[0];
-        this.loadShows();
-      }
-    });
-  }
-
-  // --------------------------
-  // Load shows for selected date/location
-  // --------------------------
-  loadShows() {
-    this.scheduleService.getShows(this.movieId, this.selectedDate, this.selectedLocation)
-      .subscribe(s => {
-        this.shows = s;
-        this.groupByCinema();
+      this.dates.push({
+        label: d.toLocaleDateString('en-US', {
+          weekday: 'short',
+          day: 'numeric',
+          month: 'short'
+        }),
+        full: d.toISOString().split('T')[0]
       });
-  }
-
-  // --------------------------
-  // Group showtimes by cinema
-  // --------------------------
-  groupByCinema() {
-    const map = new Map<string, ShowTime[]>();
-
-    this.shows.forEach(s => {
-      if (!map.has(s.cinema)) {
-        map.set(s.cinema, []);
-      }
-      map.get(s.cinema)!.push(s);
-    });
-
-    this.groupedByCinema = Array.from(map.entries()).map(([cinema, shows]) => ({
-      cinema,
-      shows
-    }));
-  }
-
-  // --------------------------
-  // Select showtime
-  // --------------------------
-  selectShow(s: ShowTime) {
-
-  if (!this.movie) return;
-
-  this.selectedShow = {
-    showId: s.showId,
-    movieId: this.movie.id,
-    movieTitle: this.movie.title,
-    poster: this.movie.image,
-
-    // cinema info
-    cinema: s.cinema,
-    location: s.location,
-    studio: s.studio,
-    class: s.classLabel,
-
-    // price & timing
-    price: s.price,
-    date: this.selectedDate,
-    time: s.time
-  };
-
-  // Save into booking service
-  this.bookingService.setShow(this.selectedShow);
-  this.bookingService.setMovieData(this.movie);
-}
-
-
-  // --------------------------
-  // Proceed to seats
-  // --------------------------
-  bookNow() {
-    if (!this.selectedShow) {
-      alert('Please select a showtime first');
-      return;
     }
 
-    this.router.navigate(['/seats', this.selectedShow.showId]);
+    this.selectedDate = this.dates[0].full;
   }
 
-  // --------------------------
-  // Date change
-  // --------------------------
-  onDateChange(d: string) {
-    this.selectedDate = d;
-    this.loadShows();
+  selectShowtime(theatre: any, show: any, time: string) {
+    this.selectedShowtime = {
+      theatre: theatre.name,
+      type: show.type,
+      time,
+      date: this.selectedDate,
+      price: show.price_min || show.price
+    };
   }
 
-  // --------------------------
-  // Location Change
-  // --------------------------
-  onLocationChange(loc: string) {
-    this.selectedLocation = loc;
-    this.loadShows();
+  // ⭐ Correct seat redirection
+  bookNow() {
+    if (!this.selectedShowtime) return;
+
+    this.router.navigate(['/seats', this.movieId], {
+      state: {
+        schedule: this.selectedShowtime,
+        movie: this.movie
+      }
+    });
   }
 }
