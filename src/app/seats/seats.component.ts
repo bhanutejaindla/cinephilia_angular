@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SeatService } from '../core/seat.service';
+import { SeatService, Seat } from '../core/seat.service';
 import { BookingService } from '../core/booking.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
 
@@ -15,79 +15,88 @@ import { FooterComponent } from '../shared/footer/footer.component';
 })
 export class SeatsComponent {
 
-  movieId = '';
   schedule: any = null;
   movie: any = null;
 
-  seats: any[] = [];
-  selected: string[] = [];
+  rows: { row: string; seats: Seat[] }[] = [];
+
+  selectedSeats: string[] = [];
   pricePerSeat = 0;
 
   constructor(
     private seatService: SeatService,
     private bookingService: BookingService,
-    private router: Router,
-    private route: ActivatedRoute
+    private router: Router
   ) {}
 
   ngOnInit() {
+    const nav = history.state;
 
-    // 1️⃣ Read movie ID from URL
-    this.movieId = this.route.snapshot.paramMap.get('id') || '';
-
-    // 2️⃣ Read schedule + movie from navigation state
-    const data = history.state;
-
-    if (!data || !data.schedule || !data.movie) {
+    if (!nav.schedule || !nav.movie) {
       this.router.navigate(['/home']);
       return;
     }
 
-    this.schedule = data.schedule;
-    this.movie = data.movie;
+    this.schedule = nav.schedule;
+    this.movie = nav.movie;
 
-    this.pricePerSeat = this.schedule.price;
+    this.pricePerSeat = this.schedule.price || 150000;
 
-    // 3️⃣ Load seats for this show
-    this.seats = this.seatService.getLayoutForShow(this.schedule.time);
+    this.loadSeats();
+
+    this.bookingService.setBooking({
+      movieId: this.movie.id,
+      movieTitle: this.movie.title,
+      poster: this.movie.image,
+      show: this.schedule,
+      selectedSeats: [],
+      total: 0
+    });
   }
 
-  isBooked(s: any) { return s.status === 'booked'; }
-  isSelected(id: string) { return this.selected.includes(id); }
+  loadSeats() {
+    const flat = this.seatService.getLayoutForShow(this.schedule.time);
+    const rowMap: Record<string, Seat[]> = {};
 
-  toggleSeat(s: any) {
+    flat.forEach(seat => {
+      if (!rowMap[seat.row]) rowMap[seat.row] = [];
+      rowMap[seat.row].push(seat);
+    });
+
+    this.rows = Object.keys(rowMap).map(r => ({
+      row: r,
+      seats: rowMap[r]
+    }));
+  }
+
+  isBooked(s: Seat) { return s.status === 'booked'; }
+  isSelected(id: string) { return this.selectedSeats.includes(id); }
+
+  toggleSeat(s: Seat) {
     if (s.status === 'booked') return;
 
     if (this.isSelected(s.id)) {
-      this.selected = this.selected.filter(x => x !== s.id);
+      this.selectedSeats = this.selectedSeats.filter(x => x !== s.id);
     } else {
-      this.selected.push(s.id);
+      this.selectedSeats.push(s.id);
     }
 
-    const total = this.selected.length * this.pricePerSeat;
-    this.bookingService.setSeats(this.selected);
-    this.bookingService.setTotal(total);
+    this.bookingService.setSeats(this.selectedSeats);
+    this.bookingService.setTotal(this.selectedSeats.length * this.pricePerSeat);
   }
 
   returnBack() {
-    this.router.navigate(['/schedule', this.movieId]);
+    this.router.navigate(['/schedule', this.movie.id]);
   }
 
   confirm() {
-    if (!this.selected.length) {
+    if (!this.selectedSeats.length) {
       alert('Select at least 1 seat');
       return;
     }
 
-    this.seatService.bookSeats(this.schedule.time, this.selected);
+    this.seatService.bookSeats(this.schedule.time, this.selectedSeats);
 
-    this.router.navigate(['/payment-confirmation'], {
-      state: {
-        schedule: this.schedule,
-        movie: this.movie,
-        seats: this.selected,
-        total: this.selected.length * this.pricePerSeat
-      }
-    });
+    this.router.navigate(['/payment-confirmation']);
   }
 }

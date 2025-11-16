@@ -1,39 +1,98 @@
-<div class="seats-root">
+<div class="seat-page">
+
+  <div class="seat-page">
+
+  <!-- TOP CENTER TITLE -->
+  <h1 class="title">SELECT A SEAT</h1>
+  <p class="subtitle">Choose the seat you will occupy during the film screening</p>
+
+  <!-- NEW HEADER ROW BELOW TITLE -->
+  <div class="seat-header">
+    
+    <!-- LEFT = TIME -->
+    <div class="time-left">
+      <div class="time-box">{{ schedule.time }}</div>
+    </div>
+
+    <!-- RIGHT = LEGEND -->
+    <div class="legend-right">
+      <div class="legend-item">
+        <span class="dot available"></span> Available
+      </div>
+      <div class="legend-item">
+        <span class="dot selected"></span> Selected
+      </div>
+      <div class="legend-item">
+        <span class="dot booked"></span> Booked
+      </div>
+    </div>
+
+  </div>
 
 
-  <div class="seats-main">
-    <div class="hall">
-      <h3>SELECT A SEAT</h3>
-      <div class="screen">— Screen Here —</div>
+  <!-- ==========================
+       SEAT GRID
+       ========================== -->
+  <div class="seat-layout">
 
-      <div class="seat-grid">
-        <div *ngFor="let s of seats" class="seat"
-             [class.booked]="isBooked(s)"
-             [class.selected]="isSelected(s.id)"
-             (click)="toggleSeat(s)">
+    <div class="seat-row" *ngFor="let row of rows">
+
+      <div class="row-label">{{ row.row }}</div>
+
+      <!-- FIRST 10 seats -->
+      <div class="seat-block">
+        <div
+          class="seat"
+          *ngFor="let s of row.seats.slice(0, 10)"
+          [ngClass]="{ booked: isBooked(s), selected: isSelected(s.id) }"
+          (click)="toggleSeat(s)"
+        >
           {{ s.id }}
         </div>
       </div>
 
-      <div class="legend">
-        <div><span class="box booked"></span> Filled</div>
-        <div><span class="box available"></span> Empty</div>
-        <div><span class="box chosen"></span> Chosen</div>
+      <!-- MIDDLE GAP -->
+      <div class="seat-gap"></div>
+
+      <!-- NEXT 10 seats -->
+      <div class="seat-block">
+        <div
+          class="seat"
+          *ngFor="let s of row.seats.slice(10, 20)"
+          [ngClass]="{ booked: isBooked(s), selected: isSelected(s.id) }"
+          (click)="toggleSeat(s)"
+        >
+          {{ s.id }}
+        </div>
       </div>
+
     </div>
 
-    <aside class="summary">
-      <h4>Booking Summary</h4>
-      <p><strong>Show:</strong> {{ booking?.show?.cinema }} | {{ booking?.show?.time }}</p>
-      <p><strong>Seats:</strong> {{ selected.join(', ') || 'None' }}</p>
-      <p><strong>Price/seat:</strong> Rs. {{ pricePerSeat }}</p>
-      <p><strong>Total:</strong> Rs. {{ booking?.total || (selected.length * pricePerSeat) }}</p>
-
-      <div class="actions">
-        <button class="btn return" (click)="returnBack()">RETURN</button>
-        <button class="btn confirm" (click)="confirm()">CONFIRM</button>
-      </div>
-    </aside>
   </div>
- 
+
+  <!-- ==========================
+       SCREEN LABEL
+       ========================== -->
+  <div class="screen-bar">Cinema Screen Here</div>
+
+  <!-- ==========================
+       SUMMARY + BUTTONS
+       ========================== -->
+  <div class="seat-summary">
+
+    <div class="summary-box">
+      <div class="label">Total</div>
+      <div class="value">Rs. {{ selectedSeats.length * pricePerSeat }}</div>
+    </div>
+
+    <div class="summary-box">
+      <div class="label">Seat</div>
+      <div class="value">{{ selectedSeats.join(', ') || '-' }}</div>
+    </div>
+
+    <button class="btn return" (click)="returnBack()">RETURN</button>
+    <button class="btn confirm" (click)="confirm()">CONFIRM</button>
+
+  </div>
+
 </div>

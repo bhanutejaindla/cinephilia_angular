@@ -20,7 +20,7 @@ export class SeatService {
     const rows = ['A','B','C','D','E','F','G','H'];
     const seats: Seat[] = [];
     for (const r of rows) {
-      for (let n = 1; n <= 10; n++) {
+      for (let n = 1; n <= 20; n++) {
         seats.push({ id: `${r}${n}`, row: r, number: n, status: 'available' });
       }
     }
