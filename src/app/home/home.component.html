@@ -1,64 +1,103 @@
-<div class="home-container">
+<div class="home-root">
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="brand">Cinemania Delight</div>
+  <!-- 🔍 SEARCH BAR -->
+  <div class="search-wrapper">
+    <input 
+      class="search-bar"
+      [(ngModel)]="searchTerm" 
+      (input)="searchMovies()"
+      placeholder="Search movies..."
+    />
+  </div>
 
-    <div class="search">
-      <input [(ngModel)]="searchTerm" (input)="searchMovies()" placeholder="Search movies...">
+  <!-- FILTERED RESULTS -->
+  <section *ngIf="filtered.length" class="section">
+    <h2 class="section-title">Filtered</h2>
+    <div class="carousel-container">
+
+      <button class="arrow left" (click)="scrollLeft('filtered')">‹</button>
+
+      <div id="filtered" class="carousel">
+        <div *ngFor="let m of filtered" class="movie-card" (click)="openSchedule(m)">
+          <img [src]="m.poster" alt="{{m.title}}">
+          <div class="movie-info">
+            <h4>{{ m.title }}</h4>
+            <p>{{ m.rating }} • {{ m.duration }}</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="arrow right" (click)="scrollRight('filtered')">›</button>
+
     </div>
-    <div class="profile">A</div>
-  </header>
+  </section>
 
-  <main>
+  <!-- NOW SHOWING -->
+  <section class="section">
+    <h2 class="section-title">Now Showing</h2>
+    <div class="carousel-container">
 
-    <!-- FILTERED RESULTS -->
-    <section *ngIf="filtered.length">
-      <h3>Filtered</h3>
-      <div class="carousel">
-        <app-movie-card
-          *ngFor="let movie of filtered"
-          [movie]="movie"
-          (click)="openMovie(movie)"
-        ></app-movie-card>
+      <button class="arrow left" (click)="scrollLeft('now')">‹</button>
+
+      <div id="now" class="carousel">
+        <div *ngFor="let m of nowShowing" class="movie-card" (click)="openSchedule(m)">
+          <img [src]="m.poster" alt="{{m.title}}">
+          <div class="movie-info">
+            <h4>{{ m.title }}</h4>
+            <p>{{ m.rating }} • {{ m.duration }}</p>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- NOW SHOWING -->
-    <section>
-      <h3>Now Showing</h3>
-      <div class="carousel">
-        <app-movie-card
-          *ngFor="let movie of nowShowing"
-          [movie]="movie"
-          (click)="openMovie(movie)"
-        ></app-movie-card>
+      <button class="arrow right" (click)="scrollRight('now')">›</button>
+
+    </div>
+  </section>
+
+  <!-- SPOTLIGHT -->
+  <section class="section">
+    <h2 class="section-title">Spotlight</h2>
+    <div class="carousel-container">
+
+      <button class="arrow left" (click)="scrollLeft('spot')">‹</button>
+
+      <div id="spot" class="carousel">
+        <div *ngFor="let m of spotlight" class="movie-card" (click)="openSchedule(m)">
+          <img [src]="m.poster" alt="{{m.title}}">
+          <div class="movie-info">
+            <h4>{{ m.title }}</h4>
+            <p>{{ m.rating }} • {{ m.duration }}</p>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- SPOTLIGHT -->
-    <section>
-      <h3>Spotlight</h3>
-      <div class="carousel">
-        <app-movie-card
-          *ngFor="let movie of spotlight"
-          [movie]="movie"
-          (click)="openMovie(movie)"
-        ></app-movie-card>
+      <button class="arrow right" (click)="scrollRight('spot')">›</button>
+
+    </div>
+  </section>
+
+  <!-- COMING SOON -->
+  <section class="section">
+    <h2 class="section-title">Coming Soon</h2>
+    <div class="carousel-container">
+
+      <button class="arrow left" (click)="scrollLeft('soon')">‹</button>
+
+      <div id="soon" class="carousel">
+        <div *ngFor="let m of comingSoon" class="movie-card" (click)="openSchedule(m)">
+          <img [src]="m.poster" alt="{{m.title}}">
+          <div class="movie-info">
+            <h4>{{ m.title }}</h4>
+            <p>{{ m.release_date }} • {{ m.duration }}</p>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- COMING SOON -->
-    <section>
-      <h3>Coming Soon</h3>
-      <div class="carousel">
-        <app-movie-card
-          *ngFor="let movie of comingSoon"
-          [movie]="movie"
-          (click)="openMovie(movie)"
-        ></app-movie-card>
-      </div>
-    </section>
+      <button class="arrow right" (click)="scrollRight('soon')">›</button>
 
-  </main>
+    </div>
+  </section>
+
 </div>
+
+

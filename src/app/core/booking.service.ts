@@ -11,6 +11,10 @@ export class BookingService {
     movieId: null,
     movieTitle: '',
     poster: '',
+    selectedDate: '',
+    selectedTime: '',
+    selectedCinema: '',
+    selectedClass: '',
     show: null,
     selectedSeats: [],
     total: 0
@@ -31,7 +35,7 @@ export class BookingService {
   }
 
   // -------------------------------------------------------------
-  // 🔵 OLD METHODS (required by your components)
+  // 🔵 OLD METHODS USED BY SCHEDULE & SEATS COMPONENTS
   // -------------------------------------------------------------
 
   setMovieId(id: any) {
@@ -39,7 +43,6 @@ export class BookingService {
     this.saveTemp();
   }
 
-  // ⭐ REQUIRED by ScheduleComponent
   setMovieData(movie: any) {
     this.currentBooking.movieTitle = movie.title;
     this.currentBooking.poster = movie.poster;
@@ -48,6 +51,13 @@ export class BookingService {
 
   setShow(show: any) {
     this.currentBooking.show = show;
+
+    // DECOMPOSE SHOW OBJECT → more readable
+    this.currentBooking.selectedDate = show.date;
+    this.currentBooking.selectedTime = show.time;
+    this.currentBooking.selectedCinema = show.cinema;
+    this.currentBooking.selectedClass = show.class;
+
     this.saveTemp();
   }
 
@@ -62,7 +72,7 @@ export class BookingService {
   }
 
   // -------------------------------------------------------------
-  // 🔵 MERGES ANY EXTRA BOOKING DATA (future-proof function)
+  // 🔵 MERGE BOOKING DATA (optional advanced usage)
   // -------------------------------------------------------------
   setBooking(data: any) {
     this.currentBooking = { ...this.currentBooking, ...data };
@@ -70,14 +80,14 @@ export class BookingService {
   }
 
   // -------------------------------------------------------------
-  // 🔵 RETURNS CURRENT BOOKING (used in payment pages)
+  // 🔵 RETRIEVE TEMP BOOKING (payment-confirmation uses this)
   // -------------------------------------------------------------
   getBooking() {
     return this.currentBooking;
   }
 
   // -------------------------------------------------------------
-  // 🔵 ADDS COMPLETED TICKET TO BOOKING HISTORY
+  // 🔵 ADD FINAL BOOKING TO HISTORY
   // -------------------------------------------------------------
   addBooking(booking: any) {
     this.bookings.push(booking);
@@ -85,14 +95,14 @@ export class BookingService {
   }
 
   // -------------------------------------------------------------
-  // 🔵 GET ALL PREVIOUS TICKETS
+  // 🔵 GET ALL BOOKINGS (History + Active Tickets)
   // -------------------------------------------------------------
   getAll() {
     return this.bookings;
   }
 
   // -------------------------------------------------------------
-  // 🔵 CANCEL BOOKING LOGIC
+  // 🔵 CANCEL BOOKING
   // -------------------------------------------------------------
   cancelBooking(id: number) {
     const b = this.bookings.find(x => x.id === id);
@@ -103,20 +113,24 @@ export class BookingService {
   }
 
   // -------------------------------------------------------------
-  // 🔵 SAVE TEMP BOOKING INTO LOCAL STORAGE
+  // 🔵 SAVE TEMP BOOKING TO LOCAL STORAGE
   // -------------------------------------------------------------
   private saveTemp() {
     localStorage.setItem('currentBooking', JSON.stringify(this.currentBooking));
   }
 
   // -------------------------------------------------------------
-  // 🔵 CLEAR TEMP BOOKING (optional after payment success)
+  // 🔵 CLEAR TEMP BOOKING AFTER PAYMENT SUCCESS
   // -------------------------------------------------------------
   clearCurrent() {
     this.currentBooking = {
       movieId: null,
       movieTitle: '',
       poster: '',
+      selectedDate: '',
+      selectedTime: '',
+      selectedCinema: '',
+      selectedClass: '',
       show: null,
       selectedSeats: [],
       total: 0

@@ -1,73 +1,63 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Movie } from './movie.model';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  private movies: Movie[] = [
-    {
-      id: '1',
-      title: 'SPIDER-MAN: NO WAY HOME',
-      poster: '/assets/movies/spiderman.jpg',
-      rating: 8.6,
-      duration: '148 min',
-      genre: 'Action',
-      certification: 'PG-13',
-      nowShowing: true,
-      spotlight: true
-    },
-    {
-      id: '2',
-      title: 'DUNE: PART TWO',
-      poster: '/assets/movies/dune.jpg',
-      rating: 8.8,
-      duration: '156 min',
-      genre: 'Sci-Fi',
-      certification: 'PG-13',
-      nowShowing: true
-    },
-    {
-      id: '3',
-      title: 'ROMANTIC COMEDY',
-      poster: '/assets/movies/romcom.jpg',
-      rating: 7.2,
-      duration: '110 min',
-      genre: 'Comedy',
-      certification: 'U',
-      comingSoon: true
-    },
-    {
-      id: '4',
-      title: 'FEATURED DRAMA',
-      poster: '/assets/movies/drama.jpg',
-      rating: 8.9,
-      duration: '120 min',
-      genre: 'Drama',
-      certification: 'PG-13',
-      spotlight: true
+  // ✔ Correct path (always starts with assets/)
+  private dataUrl = '/assets/data/movies.json';
+
+  private movies$?: Observable<Movie[]>;
+
+  constructor(private http: HttpClient) {}
+
+  // Load once & cache
+  private loadAll(): Observable<Movie[]> {
+    if (!this.movies$) {
+      this.movies$ = this.http.get<Movie[]>(this.dataUrl).pipe(
+        shareReplay(1)   // cache the result
+      );
     }
-  ];
-  getAll(): Observable<Movie[]> {
-    return of(this.movies);
+    return this.movies$;
   }
+
+  getAll(): Observable<Movie[]> {
+    return this.loadAll();
+  }
+
   getNowShowing(): Observable<Movie[]> {
-    return of(this.movies.filter(m => m.nowShowing));
+    return this.loadAll().pipe(
+      map(list => list.filter(m => m.nowShowing))
+    );
   }
 
   getSpotlight(): Observable<Movie[]> {
-    return of(this.movies.filter(m => m.spotlight));
+    return this.loadAll().pipe(
+      map(list => list.filter(m => m.spotlight))
+    );
   }
 
   getComingSoon(): Observable<Movie[]> {
-    return of(this.movies.filter(m => m.comingSoon));
+    return this.loadAll().pipe(
+      map(list => list.filter(m => m.comingSoon))
+    );
   }
 
   search(term: string): Observable<Movie[]> {
-    if (!term.trim()) return of([]);
     const q = term.toLowerCase();
-    return of(this.movies.filter(m => m.title.toLowerCase().includes(q)));
+    return this.loadAll().pipe(
+      map(list => list.filter(m => m.title.toLowerCase().includes(q)))
+    );
+  }
+
+  getById(id: string): Observable<Movie | undefined> {
+    return this.loadAll().pipe(
+      map(list => list.find(m => m.id === id))
+    );
   }
 }

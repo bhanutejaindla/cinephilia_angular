@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Spider-Man: No Way Home",
+    "rating": 8.5,
+    "duration": "148 min",
+    "genre": "Action",
+    "poster": "/assets/images/spiderman.jpg",
+    "nowShowing": true,
+    "spotlight": true,
+    "comingSoon": false
+  },
+  {
+    "id": 2,
+    "title": "Inception",
+    "rating": 8.8,
+    "duration": "148 min",
+    "genre": "Sci-Fi",
+    "poster": "/assets/images/inception.jpg",
+    "nowShowing": true,
+    "spotlight": false,
+    "comingSoon": false
+  },
+  {
+    "id": 3,
+    "title": "Avatar",
+    "rating": 7.9,
+    "duration": "162 min",
+    "genre": "Fantasy",
+    "poster": "/assets/images/avatar.jpg",
+    "nowShowing": false,
+    "spotlight": false,
+    "comingSoon": true
+  }
+]
