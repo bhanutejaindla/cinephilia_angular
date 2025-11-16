@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ScheduleService, ShowTime } from '../core/schedule.service';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+import { ScheduleService } from '../core/schedule.service';
+import { ShowTime } from '../core/showtime.model';
 import { MovieService } from '../core/movie.service';
 import { BookingService } from '../core/booking.service';
-import { FormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+
 import { Movie } from '../core/movie.model';
+
 import { NavbarComponent } from '../shared/navbar/navbar.component';
 import { FooterComponent } from '../shared/footer/footer.component';
+
+
 
 @Component({
   selector: 'app-schedule',
@@ -122,7 +128,7 @@ export class ScheduleComponent {
     showId: s.showId,
     movieId: this.movie.id,
     movieTitle: this.movie.title,
-    poster: this.movie.poster,
+    poster: this.movie.image,
 
     // cinema info
     cinema: s.cinema,

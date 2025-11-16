@@ -1,35 +1,62 @@
 [
   {
-    "id": 1,
-    "title": "Spider-Man: No Way Home",
-    "rating": 8.5,
-    "duration": "148 min",
-    "genre": "Action",
-    "poster": "/assets/images/spiderman.jpg",
-    "nowShowing": true,
-    "spotlight": true,
-    "comingSoon": false
+    "id": "movie_001",
+    "title": "The Batman (2022)",
+    "image": "the_batman_2022_placeholder_image.jpg",
+    "release_date": "2022-03-04",
+    "duration": "176 min",
+    "certification": "PG-13",
+    "director": "Matt Reeves",
+    "genre": ["Action", "Crime", "Drama"]
   },
   {
-    "id": 2,
+    "id": "movie_002",
+    "title": "Spiderman: No Way Home",
+    "image": "spiderman_no_way_home_placeholder_image.jpg",
+    "release_date": "2021-12-17",
+    "duration": "148 min",
+    "certification": "PG",
+    "director": "Jon Watts",
+    "genre": ["Action", "Adventure", "Sci-Fi"]
+  },
+  {
+    "id": "movie_003",
+    "title": "Doctor Strange in the Multiverse of Madness",
+    "image": "doctor_strange_multiverse_of_madness_placeholder_image.jpg",
+    "release_date": "2022-05-06",
+    "duration": "126 min",
+    "certification": "PG-13",
+    "director": "Sam Raimi",
+    "genre": ["Adventure", "Fantasy", "Action"]
+  },
+  {
+    "id": "movie_004",
+    "title": "The Northman",
+    "image": "the_northman_placeholder_image.jpg",
+    "release_date": "2022-04-22",
+    "duration": "137 min",
+    "certification": "R",
+    "director": "Robert Eggers",
+    "genre": ["Action", "Adventure", "Drama"]
+  },
+  {
+    "id": "movie_005",
+    "title": "Avatar: The Way of Water",
+    "image": "avatar_way_of_water_placeholder_image.jpg",
+    "release_date": "2022-12-16",
+    "duration": "192 min",
+    "certification": "PG-13",
+    "director": "James Cameron",
+    "genre": ["Fantasy", "Sci-Fi", "Adventure"]
+  },
+  {
+    "id": "movie_006",
     "title": "Inception",
-    "rating": 8.8,
+    "image": "inception_placeholder_image.jpg",
+    "release_date": "2010-07-16",
     "duration": "148 min",
-    "genre": "Sci-Fi",
-    "poster": "/assets/images/inception.jpg",
-    "nowShowing": true,
-    "spotlight": false,
-    "comingSoon": false
-  },
-  {
-    "id": 3,
-    "title": "Avatar",
-    "rating": 7.9,
-    "duration": "162 min",
-    "genre": "Fantasy",
-    "poster": "/assets/images/avatar.jpg",
-    "nowShowing": false,
-    "spotlight": false,
-    "comingSoon": true
+    "certification": "PG-13",
+    "director": "Christopher Nolan",
+    "genre": ["Sci-Fi", "Action", "Thriller"]
   }
 ]
