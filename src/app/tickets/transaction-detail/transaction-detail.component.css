@@ -1,0 +1,35 @@
+.detail-container {
+  padding: 32px;
+  background: #141414;
+  min-height: 80vh;
+  color: white;
+}
+
+.ticket-box {
+  background: rgba(255,255,255,0.06);
+  padding: 28px;
+  border-radius: 10px;
+  width: 500px;
+  margin: auto;
+}
+
+.barcode {
+  height: 100px;
+  background: repeating-linear-gradient(
+    90deg,
+    #000,
+    #000 4px,
+    #fff 4px,
+    #fff 8px
+  );
+  margin: 16px 0;
+}
+
+.back-btn {
+  margin-top: 20px;
+  background: transparent;
+  color: #ff3b3b;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}

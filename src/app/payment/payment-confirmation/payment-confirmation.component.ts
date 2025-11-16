@@ -9,7 +9,7 @@ import { FooterComponent } from '../../shared/footer/footer.component';
 @Component({
   selector: 'app-payment-confirmation',
   standalone: true,
-  imports: [CommonModule, FormsModule,NavbarComponent,FooterComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
   templateUrl: './payment-confirmation.component.html',
   styleUrls: ['./payment-confirmation.component.css']
 })
@@ -45,8 +45,26 @@ export class PaymentConfirmationComponent {
 
   buyTickets() {
     if (!this.selectedPayment) return;
+
+    const finalBooking = {
+      id: Date.now(),
+      title: this.booking.movieTitle,
+      date: this.booking.selectedDate,
+      time: this.booking.selectedTime,
+      cinema: this.booking.selectedCinema,
+      class: this.booking.selectedClass,
+      seats: this.booking.selectedSeats.join(", "),
+      poster: this.booking.poster,
+      total: this.booking.total + 2000,
+      paymentMethod: this.selectedPayment,
+      status: "BOOKED"
+    };
+
+    this.bookingService.addBooking(finalBooking);
+
     setTimeout(() => {
       this.router.navigate(['/payment-success']);
     }, 300);
   }
+
 }

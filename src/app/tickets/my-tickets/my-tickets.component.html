@@ -1,0 +1,42 @@
+<div class="ticket-container">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="brand">Cinemania<br>Delight</div>
+
+    <div class="menu">
+      <a class="menu-item active" routerLink="/my-tickets">🎟 Active Tickets</a>
+      <a class="menu-item" routerLink="/transactions">📄 Transaction List</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="content">
+
+    <h2>Active Tickets</h2>
+    <p class="subtitle">Your upcoming booked tickets</p>
+
+    <div class="tabs">
+      <span class="tab active">Film</span>
+      <span class="tab">Event</span>
+      <span class="tab">Voucher</span>
+    </div>
+
+    <!-- LIST ACTIVE BOOKINGS -->
+    <div class="ticket-card" *ngFor="let t of activeTickets">
+
+      <img [src]="t.poster" class="poster">
+
+      <div class="details">
+        <h3>{{ t.title }}</h3>
+        <p class="datetime">{{ t.date }} | {{ t.time }}</p>
+        <p class="cinema">{{ t.cinema }} ({{ t.class }})</p>
+      </div>
+
+      <span class="badge booked">BOOKED</span>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,46 @@
+<app-navbar></app-navbar>
+
+<div class="detail-container">
+
+  <h2>Transaction Details</h2>
+
+  <div class="ticket-box">
+
+    <h3>{{ ticket?.title }}</h3>
+    <p><strong>Date:</strong> {{ ticket?.date }}</p>
+    <p><strong>Location:</strong> {{ ticket?.cinema }}</p>
+    <p><strong>Class:</strong> {{ ticket?.class }}</p>
+
+    <div class="barcode"></div>
+
+    <h3>Purchase Details</h3>
+
+    <p>Regular Seat × {{ ticket?.seats.length }}  
+      <span>Rs. {{ ticket?.price }}</span></p>
+
+    <p>Service Fee × {{ ticket?.seats.length }}  
+      <span>Rs. {{ ticket?.serviceFee }}</span></p>
+
+    <p>Promo  
+      <span>- Rs. {{ ticket?.promo }}</span></p>
+
+    <hr>
+
+    <p class="total">
+      Total Payment:
+      <strong>
+        Rs. {{
+        (ticket?.price * ticket?.seats.length) +
+        (ticket?.serviceFee * ticket?.seats.length) -
+        ticket?.promo
+        }}
+      </strong>
+    </p>
+
+    <button class="back-btn" (click)="goBack()">← Back</button>
+
+  </div>
+
+</div>
+
+<app-footer></app-footer>

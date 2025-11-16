@@ -1,0 +1,68 @@
+.ticket-container {
+  display: flex;
+  background: #0f0f1a;
+  min-height: 100vh;
+  padding-top: 80px;
+  color: white;
+  font-family: Poppins, sans-serif;
+}
+
+/* Sidebar SAME as before */
+.sidebar {
+  width: 220px;
+  background: #1a1a2a;
+  padding: 30px 20px;
+  position: fixed;
+  top: 80px;
+  height: calc(100vh - 80px);
+}
+
+.menu-item {
+  display: block;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #bbb;
+}
+
+.menu-item.active {
+  color: white;
+  font-weight: 600;
+}
+
+/* Content */
+.content {
+  margin-left: 260px;
+  padding: 20px 30px;
+}
+
+/* Ticket History Cards */
+.history-card {
+  display: flex;
+  background: #1a1a2a;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.poster {
+  width: 90px;
+  height: 130px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.info {
+  margin-left: 20px;
+  flex: 1;
+}
+
+.badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: #12c212;
+}
+
+.badge.cancelled {
+  background: #ff3b3b;
+}

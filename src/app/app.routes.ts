@@ -24,6 +24,26 @@ export const routes: Routes = [
     loadComponent: () =>
         import('./payment/payment-success/payment-success.component')
         .then(m => m.PaymentSuccessComponent)
-  }
+  },
+  {
+  path: 'my-tickets',
+  loadComponent: () =>
+    import('./tickets/my-tickets/my-tickets.component')
+      .then(c => c.MyTicketsComponent)
+},
+
+{
+  path: 'transactions',
+  loadComponent: () =>
+    import('./tickets/transaction-list/transaction-list.component')
+      .then(c => c.TransactionListComponent)
+},
+{
+  path: 'transaction/:id',
+  loadComponent: () =>
+    import('./tickets/transaction-detail/transaction-detail.component')
+      .then(m => m.TransactionDetailComponent)
+},
+
 
 ];
