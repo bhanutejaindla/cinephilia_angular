@@ -1,25 +1,37 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { BookingService } from '../../core/booking.service';
 import { Router } from '@angular/router';
+import { BookingService } from '../../core/booking.service';
 import { NavbarComponent } from '../../shared/navbar/navbar.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 
 @Component({
   selector: 'app-payment-confirmation',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, NavbarComponent, FooterComponent],
   templateUrl: './payment-confirmation.component.html',
   styleUrls: ['./payment-confirmation.component.css']
 })
 export class PaymentConfirmationComponent {
 
-  booking: any;
-  selectedPayment: string = '';
-  showPopup: boolean = false;
+  booking: any = null;
 
-  paymentOptions = ['Credit Card', 'Debit Card', 'Cash', 'UPI', 'Wallet'];
+  /** See-all toggle */
+  showMethods: boolean = false;
+
+  /** Payment list */
+  paymentMethods = [
+    'Credit Card',
+    'Debit Card',
+    'Cash',
+    'UPI',
+    'Wallet'
+  ];
+
+  selectedPayment: string | null = null;
+
+  serviceFee = 5000;
+  promoDiscount = 0;
 
   constructor(
     private bookingService: BookingService,
@@ -29,42 +41,59 @@ export class PaymentConfirmationComponent {
   ngOnInit() {
     this.booking = this.bookingService.getBooking();
 
-    if (!this.booking?.selectedSeats?.length) {
+    // Validate booking
+    if (!this.booking?.show || !this.booking.selectedSeats?.length) {
       this.router.navigate(['/home']);
+      return;
     }
   }
 
-  openPaymentPopup() {
-    this.showPopup = true;
+  /** Auto calculate total */
+  get totalPay() {
+    return this.booking.total + this.serviceFee - this.promoDiscount;
   }
 
+  /** Toggle SEE ALL list */
+  togglePaymentMethods() {
+    this.showMethods = !this.showMethods;
+  }
+
+  /** Select payment method */
   choosePayment(method: string) {
     this.selectedPayment = method;
-    this.showPopup = false;
   }
 
-  buyTickets() {
-    if (!this.selectedPayment) return;
+  /** Back button */
+  goBack() {
+    this.router.navigate(['/seats', this.booking.movieId]);
+  }
+
+  /** Confirm and save booking */
+  confirmPayment() {
+
+    if (!this.selectedPayment) {
+      alert("Please choose a payment method");
+      return;
+    }
 
     const finalBooking = {
       id: Date.now(),
-      title: this.booking.movieTitle,
-      date: this.booking.selectedDate,
-      time: this.booking.selectedTime,
-      cinema: this.booking.selectedCinema,
-      class: this.booking.selectedClass,
-      seats: this.booking.selectedSeats.join(", "),
+      movieId: this.booking.movieId,
+      movieTitle: this.booking.movieTitle,
       poster: this.booking.poster,
-      total: this.booking.total + 2000,
+      seats: this.booking.selectedSeats,
+      show: this.booking.show,
+      total: this.totalPay,
       paymentMethod: this.selectedPayment,
-      status: "BOOKED"
+      status: "CONFIRMED",
+      date: new Date().toISOString()
     };
 
     this.bookingService.addBooking(finalBooking);
+    this.bookingService.clearCurrent();
 
-    setTimeout(() => {
-      this.router.navigate(['/payment-success']);
-    }, 300);
+    this.router.navigate(['/payment-success'], {
+      state: { id: finalBooking.id }
+    });
   }
-
 }

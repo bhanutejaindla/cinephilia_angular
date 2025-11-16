@@ -1,99 +1,118 @@
-<div class="payment-root">
+<div class="payment-page">
 
-  
+  <!-- MAIN WRAPPER -->
+  <div class="content-wrapper">
 
-  <div class="payment-main">
+    <!-- LEFT SIDE → Schedule Details -->
+    <div class="left-card">
 
-    <!-- LEFT SIDE -->
-    <div class="left-col">
-
-      <h2>PAYMENT CONFIRMATION</h2>
-      <p>Confirm payment for the seats you ordered.</p>
+      <h2 class="title">PAYMENT CONFIRMATION</h2>
+      <p class="subtitle">Confirm payment for the seats you ordered</p>
 
       <div class="section">
-        <h3>{{ booking?.show?.cinema }}</h3>
+        <div class="section-title">Schedule Details</div>
 
-        <p>{{ booking?.show?.date }} | {{ booking?.show?.time }}</p>
+        <div class="row">
+          <span class="label">Movie</span>
+          <span class="value">{{ booking.movieTitle }}</span>
+        </div>
 
-        <p>Class: {{ booking?.show?.studio }}</p>
+        <div class="row">
+          <span class="label">Date</span>
+          <span class="value">{{ booking.show.date }}</span>
+        </div>
 
-        <p>
-          Tickets ({{ booking?.selectedSeats?.length }}):
-          {{ booking?.selectedSeats?.join(', ') }}
-        </p>
+        <div class="row">
+          <span class="label">Time</span>
+          <span class="value">{{ booking.show.time }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Class</span>
+          <span class="value">{{ booking.show.type }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Tickets ({{ booking.selectedSeats.length }})</span>
+          <span class="value">{{ booking.selectedSeats.join(', ') }}</span>
+        </div>
       </div>
+
+      <button class="back-btn" (click)="goBack()">
+        ← Back
+      </button>
 
     </div>
 
-    <!-- RIGHT SIDE -->
-    <aside class="right-col">
+    <!-- RIGHT SIDE → Order Summary -->
+    <div class="right-card">
 
-      <h3>Order Summary</h3>
+      <h3 class="summary-title">Order Summary</h3>
 
       <div class="summary-row">
-        <span>REGULAR SEAT</span>
-        <span>Rs. {{ booking?.show?.price }}</span>
+        <span>Regular Seat</span>
+        <span>Rs. {{ booking.total }}</span>
       </div>
 
       <div class="summary-row">
-        <span>SERVICE FEE</span>
-        <span>Rs. 2000</span>
-      </div>
-
-      <div class="summary-row promo">
-        <span>PROMO</span>
-        <span>- Rs. 0</span>
+        <span>Service Fees</span>
+        <span>Rs. {{ serviceFee }}</span>
       </div>
 
       <hr>
 
+      <div class="summary-row">
+        <span>Promo / Voucher</span>
+        <span>- Rs. {{ promoDiscount }}</span>
+      </div>
+
       <div class="summary-total">
         <span>Total Pay</span>
-        <span>Rs. {{ (booking?.total || 0) + 2000 }}</span>
+        <span>Rs. {{ totalPay }}</span>
       </div>
 
-      <div class="payment-method">
-        <span>Payment Method</span>
-        <button class="see-all" (click)="openPaymentPopup()">See All</button>
+      <!-- PAYMENT METHOD TITLE + SEE ALL -->
+      <div class="pay-header">
+        <span class="pay-label">Payment method</span>
+        
+        <span class="see-all" *ngIf="!showMethods" (click)="togglePaymentMethods()">
+          See all →
+        </span>
       </div>
 
-      <p *ngIf="selectedPayment" class="selected-method">
-        Selected: {{ selectedPayment }}
-      </p>
+      <!-- DEFAULT ONE METHOD SHOWN (LIKE FIGMA) -->
+      <div class="payment-default" *ngIf="!showMethods">
+        <div 
+          class="method-single"
+          [class.active]="selectedPayment === 'Credit Card'"
+          (click)="choosePayment('Credit Card')"
+        >
+          Credit / Debit Card
+        </div>
+      </div>
 
-      <button
-        class="buy-btn"
-        [disabled]="!selectedPayment"
-        (click)="buyTickets()"
-      >
+      <!-- FULL PAYMENT LIST -->
+      <div class="payment-methods" *ngIf="showMethods">
+        <div
+          class="method"
+          *ngFor="let p of paymentMethods"
+          [class.active]="selectedPayment === p"
+          (click)="choosePayment(p)"
+        >
+          {{ p }}
+        </div>
+      </div>
+
+      <!-- BUY TICKETS BUTTON -->
+      <button 
+        class="buy-btn" 
+        [class.disabled]="!selectedPayment"
+        (click)="confirmPayment()">
         BUY TICKETS
       </button>
 
-      <p class="disclaimer">
-        Ticket purchase cannot be cancelled.
-      </p>
-
-    </aside>
-
-  </div>
-
-  <!-- PAYMENT POPUP -->
-  <div class="payment-popup" *ngIf="showPopup">
-    <div class="popup-content">
-
-      <h3>Select Payment Method</h3>
-
-      <button
-        *ngFor="let p of paymentOptions"
-        (click)="choosePayment(p)"
-      >
-        {{ p }}
-      </button>
-
-      <button class="close" (click)="showPopup = false">Close</button>
-
     </div>
-  </div>
 
+  </div>
 
 </div>

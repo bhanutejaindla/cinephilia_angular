@@ -1,115 +1,217 @@
-.payment-root {
-  min-height: 100vh;
-  background: #070707;
+/* ====================================
+   PAGE BACKGROUND
+==================================== */
+.payment-page {
+  width: 100%;
+  background: #0d0f17;
   color: white;
-  font-family: Poppins, sans-serif;
+  padding: 40px 0 150px;
+  font-family: "Poppins", sans-serif;
 }
 
-.topbar {
-  background: #0d0d0d;
-  padding: 14px 24px;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-}
-
-.payment-main {
+/* ====================================
+   MAIN CONTAINER
+==================================== */
+.content-wrapper {
+  width: 80%;
+  margin: auto;
   display: flex;
-  gap: 24px;
-  padding: 28px;
+  justify-content: space-between;
+  gap: 40px;
 }
 
-.left-col {
-  flex: 1;
-  background: rgba(255,255,255,0.02);
-  padding: 20px;
-  border-radius: 8px;
+/* ====================================
+   LEFT CARD (Schedule Details)
+==================================== */
+.left-card {
+  width: 55%;
+  padding: 35px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2c003e, #150028 60%);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
 }
 
-.right-col {
-  width: 360px;
-  background: rgba(255,255,255,0.03);
-  padding: 20px;
-  border-radius: 8px;
+.title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 18px;
+  opacity: 0.9;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.label {
+  opacity: 0.8;
+  font-size: 14px;
+}
+
+.value {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* Back Button */
+.back-btn {
+  margin-top: 20px;
+  background: transparent;
+  border: none;
+  color: #ff5c5c;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  padding-left: 0;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+/* ====================================
+   RIGHT CARD (Order Summary)
+==================================== */
+.right-card {
+  width: 35%;
+  padding: 30px;
+  background: #10131f;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+}
+
+.summary-title {
+  font-size: 18px;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  opacity: 0.9;
 }
 
 .summary-total {
   display: flex;
   justify-content: space-between;
-  font-weight: 700;
-  margin-top: 12px;
   font-size: 18px;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 15px 0;
+}
+
+/* ====================================
+   PAYMENT METHOD SECTION
+==================================== */
+.pay-header {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 10px;
+}
+
+.pay-label {
+  font-size: 14px;
+  opacity: 0.85;
 }
 
 .see-all {
-  background: transparent;
-  color: #ffdd99;
-  border: none;
+  font-size: 14px;
+  color: #4da3ff;
   cursor: pointer;
 }
 
-.payment-method {
-  margin-top: 16px;
-  display: flex;
-  justify-content: space-between;
+.see-all:hover {
+  text-decoration: underline;
 }
 
+/*** Default Single Method (Collapsed view) ***/
+.payment-default {
+  margin-bottom: 10px;
+}
+
+.method-single {
+  background: #1d2233;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+/* Active */
+.method-single.active {
+  border-color: #4da3ff;
+  background: #22304a;
+}
+
+/*** Full Payment List (Expanded view) ***/
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.method {
+  background: #1d2233;
+  padding: 12px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: 0.25s;
+}
+
+.method:hover {
+  background: #27314a;
+}
+
+.method.active {
+  border-color: #4da3ff;
+  background: #22304a;
+}
+
+/* ====================================
+   BUY BUTTON
+==================================== */
 .buy-btn {
   width: 100%;
-  margin-top: 16px;
-  padding: 12px;
-  background: #ff3b3b;
+  background: #e63946;
+  padding: 12px 0;
   border: none;
   color: white;
-  font-weight: 700;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
   cursor: pointer;
-  border-radius: 6px;
 }
 
-.buy-btn[disabled] {
+.buy-btn:hover {
+  background: #d62839;
+}
+
+.buy-btn.disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.disclaimer {
-  margin-top: 12px;
-  font-size: 12px;
-  opacity: 0.6;
-}
-
-/* POPUP STYLES */
-.payment-popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.popup-content {
-  background: #222;
-  padding: 20px;
-  width: 300px;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.popup-content button {
-  width: 100%;
-  padding: 10px;
-  background: #444;
-  border: none;
-  color: white;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.close {
-  background: #ff3b3b;
 }
