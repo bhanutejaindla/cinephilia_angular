@@ -1,103 +1,148 @@
-<div class="home-root">
+<app-navbar></app-navbar>
 
-  <!-- 🔍 SEARCH BAR -->
-  <div class="search-wrapper">
-    <input 
-      class="search-bar"
-      [(ngModel)]="searchTerm" 
-      (input)="searchMovies()"
+<div class="home-container">
+
+  <!-- 🔎 SEARCH BAR -->
+  <div class="search-box">
+    <input
+      type="text"
       placeholder="Search movies..."
+      [(ngModel)]="searchTerm"
+      (input)="searchMovies()"
     />
   </div>
 
-  <!-- FILTERED RESULTS -->
-  <section *ngIf="filtered.length" class="section">
-    <h2 class="section-title">Filtered</h2>
-    <div class="carousel-container">
+  <!-- ⭐ SEARCH RESULTS -->
+  <div *ngIf="filtered.length > 0">
+    <h2>Filtered Results</h2>
 
-      <button class="arrow left" (click)="scrollLeft('filtered')">‹</button>
+    <div class="carousel-wrapper">
+      <button class="arrow left" (click)="scrollLeft('filtered')">❮</button>
 
-      <div id="filtered" class="carousel">
+      <div class="carousel" id="filtered">
+        
         <div *ngFor="let m of filtered" class="movie-card" (click)="openSchedule(m)">
-          <img [src]="m.poster" alt="{{m.title}}">
-          <div class="movie-info">
-            <h4>{{ m.title }}</h4>
-            <p>{{ m.rating }} • {{ m.duration }}</p>
+
+          <!-- Poster -->
+          <img [src]="'assets/images/' + m.image" alt="{{ m.title }}" class="poster">
+
+          <!-- Title -->
+          <h3>{{ m.title }}</h3>
+
+          <!-- Release date -->
+          <p class="small">Release: {{ m.release_date }}</p>
+
+          <!-- Duration -->
+          <p class="small">{{ m.duration }}</p>
+
+          <!-- Certification -->
+          <span class="badge">{{ m.certification }}</span>
+
+          <!-- Genre -->
+          <div class="genre-box">
+            <span *ngFor="let g of m.genre" class="genre-tag">
+              {{ g }}
+            </span>
           </div>
+
         </div>
+
       </div>
 
-      <button class="arrow right" (click)="scrollRight('filtered')">›</button>
-
+      <button class="arrow right" (click)="scrollRight('filtered')">❯</button>
     </div>
-  </section>
+  </div>
 
-  <!-- NOW SHOWING -->
-  <section class="section">
-    <h2 class="section-title">Now Showing</h2>
-    <div class="carousel-container">
+  <!-- 🎬 NOW SHOWING -->
+  <h2>Now Showing</h2>
 
-      <button class="arrow left" (click)="scrollLeft('now')">‹</button>
+  <div class="carousel-wrapper">
+    <button class="arrow left" (click)="scrollLeft('now')">❮</button>
 
-      <div id="now" class="carousel">
-        <div *ngFor="let m of nowShowing" class="movie-card" (click)="openSchedule(m)">
-          <img [src]="m.poster" alt="{{m.title}}">
-          <div class="movie-info">
-            <h4>{{ m.title }}</h4>
-            <p>{{ m.rating }} • {{ m.duration }}</p>
-          </div>
+    <div class="carousel" id="now">
+
+      <div *ngFor="let m of nowShowing" class="movie-card" (click)="openSchedule(m)">
+        
+        <img [src]="'assets/images/' + m.image" alt="{{ m.title }}" class="poster">
+
+        <h3>{{ m.title }}</h3>
+        <p class="small">Release: {{ m.release_date }}</p>
+        <p class="small">{{ m.duration }}</p>
+        <span class="badge">{{ m.certification }}</span>
+
+        <div class="genre-box">
+          <span *ngFor="let g of m.genre" class="genre-tag">
+            {{ g }}
+          </span>
         </div>
+
       </div>
 
-      <button class="arrow right" (click)="scrollRight('now')">›</button>
-
     </div>
-  </section>
 
-  <!-- SPOTLIGHT -->
-  <section class="section">
-    <h2 class="section-title">Spotlight</h2>
-    <div class="carousel-container">
+    <button class="arrow right" (click)="scrollRight('now')">❯</button>
+  </div>
 
-      <button class="arrow left" (click)="scrollLeft('spot')">‹</button>
+  <!-- 🌟 SPOTLIGHT -->
+  <h2>Spotlight</h2>
 
-      <div id="spot" class="carousel">
-        <div *ngFor="let m of spotlight" class="movie-card" (click)="openSchedule(m)">
-          <img [src]="m.poster" alt="{{m.title}}">
-          <div class="movie-info">
-            <h4>{{ m.title }}</h4>
-            <p>{{ m.rating }} • {{ m.duration }}</p>
-          </div>
+  <div class="carousel-wrapper">
+    <button class="arrow left" (click)="scrollLeft('spot')">❮</button>
+
+    <div class="carousel" id="spot">
+
+      <div *ngFor="let m of spotlight" class="movie-card" (click)="openSchedule(m)">
+
+        <img [src]="'assets/images/' + m.image" alt="{{ m.title }}" class="poster">
+
+        <h3>{{ m.title }}</h3>
+        <p class="small">Release: {{ m.release_date }}</p>
+        <p class="small">{{ m.duration }}</p>
+        <span class="badge">{{ m.certification }}</span>
+
+        <div class="genre-box">
+          <span *ngFor="let g of m.genre" class="genre-tag">
+            {{ g }}
+          </span>
         </div>
+
       </div>
 
-      <button class="arrow right" (click)="scrollRight('spot')">›</button>
-
     </div>
-  </section>
 
-  <!-- COMING SOON -->
-  <section class="section">
-    <h2 class="section-title">Coming Soon</h2>
-    <div class="carousel-container">
+    <button class="arrow right" (click)="scrollRight('spot')">❯</button>
+  </div>
 
-      <button class="arrow left" (click)="scrollLeft('soon')">‹</button>
+  <!-- 🚀 COMING SOON -->
+  <h2>Coming Soon</h2>
 
-      <div id="soon" class="carousel">
-        <div *ngFor="let m of comingSoon" class="movie-card" (click)="openSchedule(m)">
-          <img [src]="m.poster" alt="{{m.title}}">
-          <div class="movie-info">
-            <h4>{{ m.title }}</h4>
-            <p>{{ m.release_date }} • {{ m.duration }}</p>
-          </div>
+  <div class="carousel-wrapper">
+    <button class="arrow left" (click)="scrollLeft('soon')">❮</button>
+
+    <div class="carousel" id="soon">
+
+      <div *ngFor="let m of comingSoon" class="movie-card" (click)="openSchedule(m)">
+
+        <img [src]="'assets/images/' + m.image" alt="{{ m.title }}" class="poster">
+
+        <h3>{{ m.title }}</h3>
+        <p class="small">Release: {{ m.release_date }}</p>
+        <p class="small">{{ m.duration }}</p>
+        <span class="badge">{{ m.certification }}</span>
+
+        <div class="genre-box">
+          <span *ngFor="let g of m.genre" class="genre-tag">
+            {{ g }}
+          </span>
         </div>
+
       </div>
 
-      <button class="arrow right" (click)="scrollRight('soon')">›</button>
-
     </div>
-  </section>
+
+    <button class="arrow right" (click)="scrollRight('soon')">❯</button>
+  </div>
 
 </div>
 
-
+<app-footer></app-footer>
