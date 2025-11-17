@@ -1,4 +1,4 @@
-<div class="signin-container">
+<!-- <div class="signin-container">
 
   <!-- LEFT SIDE (BACKGROUND + LOGO) -->
   <div class="left-panel">
@@ -33,4 +33,68 @@
 
   </div>
 
+</div> -->
+
+
+<div class="signin-container">
+  <!-- LEFT SIDE (BACKGROUND + LOGO) -->
+  <div class="left-panel">
+    <div class="logo">Cinemania<br>Delight</div>
+  </div>
+
+  <!-- RIGHT SIDE PANEL -->
+  <div class="form-panel">
+    <h2>SIGN IN</h2>
+    
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      
+      <!-- Phone Number Field -->
+      <label>Enter Phone Number</label>
+      <input 
+        type="text" 
+        placeholder="+91 | 9876543210" 
+        name="phone"
+        [(ngModel)]="loginData.phone"
+        #phone="ngModel"
+        required
+        pattern="^[0-9]{10}$">
+      
+      <p class="error-text" *ngIf="phone.touched && phone.invalid">
+        <span *ngIf="phone.errors?.['required']">Phone number is required</span>
+        <span *ngIf="phone.errors?.['pattern']">Enter valid 10-digit phone number</span>
+      </p>
+
+      <!-- Password Field -->
+      <label>Password</label>
+      <div class="password-box">
+        <input 
+          [type]="showPassword ? 'text' : 'password'"
+          name="password"
+          [(ngModel)]="loginData.password"
+          #password="ngModel"
+          required
+          placeholder="••••••••">
+        <button type="button" (click)="togglePass()">
+          {{ showPassword ? '🙈' : '👁' }}
+        </button>
+      </div>
+      
+      <p class="error-text" *ngIf="password.touched && password.errors?.['required']">
+        Password is required
+      </p>
+
+      <!-- Error Message -->
+      <p *ngIf="error" class="error-text">{{ error }}</p>
+
+      <!-- Submit Button -->
+      <button class="signin-btn" type="submit" [disabled]="loginForm.invalid">
+        SIGN IN
+      </button>
+    </form>
+
+    <!-- Sign Up Link -->
+    <div class="signup-link">
+      Don't have an account? <a routerLink="/sign-up">Sign Up</a>
+    </div>
+  </div>
 </div>
