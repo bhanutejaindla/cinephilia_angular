@@ -72,53 +72,112 @@
 //   }
 // }
 
-<div class="signup-container">
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 
-  <!-- LEFT SIDE (BACKGROUND IMAGE + LOGO) -->
-  <div class="left-panel">
-    <div class="logo">Cinemania<br>Delight</div>
-  </div>
+@Component({
+  selector: 'app-sign-up',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  templateUrl: './sign-up.component.html',
+  styleUrl: './sign-up.component.css'
+})
+export class SignUpComponent {
+  signupForm!: FormGroup;
+  showPassword = false;
+  showConfirmPassword = false;
 
-  <!-- RIGHT SIDE FORM -->
-  <div class="form-panel">
-    <h2>SIGN UP</h2>
+  constructor(private fb: FormBuilder, private router: Router) {}
 
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+  ngOnInit() {
+    this.signupForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(8),
+        this.passwordStrengthValidator
+      ]],
+      confirmPassword: ['', Validators.required]
+    }, { 
+      validators: this.passwordMatchValidator 
+    });
+  }
 
-      <label>User Name</label>
-      <input type="text" formControlName="username" placeholder="John Doe">
-      <p *ngIf="f['username'].touched && f['username'].invalid">Required</p>
+  // Custom validator for password strength
+  passwordStrengthValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    if (!value) return null;
 
-      <label>Enter Phone Number</label>
-      <input type="text" formControlName="phone" placeholder="+91 | 9876543210">
-      <p *ngIf="f['phone'].touched && f['phone'].invalid">Invalid phone number</p>
+    const hasUpperCase = /[A-Z]/.test(value);
+    const hasLowerCase = /[a-z]/.test(value);
+    const hasNumeric = /[0-9]/.test(value);
+    const hasSpecialChar = /[@$!%*?&#]/.test(value);
 
-      <label>Email</label>
-      <input type="email" formControlName="email" placeholder="john.doe@gmail.com">
-      <p *ngIf="f['email'].touched && f['email'].invalid">Invalid email</p>
+    const valid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar;
+    
+    return valid ? null : { 
+      passwordStrength: {
+        hasUpperCase,
+        hasLowerCase,
+        hasNumeric,
+        hasSpecialChar
+      }
+    };
+  }
 
-      <label>Password</label>
-      <div class="password-box">
-        <input [type]="showPassword ? 'text' : 'password'" formControlName="password">
-        <button type="button" (click)="togglePass()">👁</button>
-      </div>
-      <p *ngIf="f['password'].touched && f['password'].invalid">
-        Must contain uppercase, lowercase, number, special char
-      </p>
+  // Custom validator to check if passwords match
+  passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
+    const password = control.get('password');
+    const confirmPassword = control.get('confirmPassword');
 
-      <label>Confirm Password</label>
-      <div class="password-box">
-        <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword">
-        <button type="button" (click)="toggleConfirmPass()">👁</button>
-      </div>
+    if (!password || !confirmPassword) return null;
 
-      <button class="signup-btn" type="submit">SIGN UP</button>
+    return password.value === confirmPassword.value ? null : { passwordMismatch: true };
+  }
 
-    </form>
+  get f() {
+    return this.signupForm.controls;
+  }
 
-    <div class="signin-link">
-      <a routerLink="/sign-in">Sign In ?</a>
-    </div>
+  // Helper to check password match error
+  get passwordMismatch(): boolean {
+    return this.signupForm.hasError('passwordMismatch') && 
+           this.f['confirmPassword'].touched;
+  }
 
-  </div>
-</div>
+  togglePass() {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPass() {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+
+  onSubmit() {
+    if (this.signupForm.invalid) {
+      this.signupForm.markAllAsTouched();
+      return;
+    }
+
+    // Check if email already exists
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    const exists = users.find((u: any) => u.email === this.signupForm.value.email);
+    
+    if (exists) {
+      alert("Email already registered!");
+      return;
+    }
+
+    // Save user (excluding confirmPassword)
+    const { confirmPassword, ...userData } = this.signupForm.value;
+    users.push(userData);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    alert("Account created successfully! Redirecting to Sign In...");
+    this.router.navigate(['/sign-in']);
+  }
+}
