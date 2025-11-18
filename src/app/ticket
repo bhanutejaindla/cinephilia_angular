@@ -1,0 +1,58 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TicketService } from '../services/ticket.service';
+
+@Component({
+  selector: 'app-payment-success',
+  templateUrl: './payment-success.component.html',
+  styleUrls: ['./payment-success.component.css']
+})
+export class PaymentSuccessComponent implements OnInit {
+
+  ticket: any = null;
+
+  constructor(
+    private router: Router,
+    private ticketService: TicketService
+  ) {}
+
+  ngOnInit(): void {
+
+    // Read ticket from router navigation state
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { ticket: any };
+
+    // If ticket is available → save it
+    if (state?.ticket) {
+      this.ticket = state.ticket;
+
+      // Save to backend (JSON server)
+      this.ticketService.addTicket(this.ticket).subscribe({
+        next: (saved) => {
+          console.log("Ticket saved successfully", saved);
+
+          // Store saved ticket in case user refreshes
+          localStorage.setItem("lastTicket", JSON.stringify(saved));
+        },
+        error: (err) => {
+          console.error("Error saving ticket", err);
+        }
+      });
+
+    } else {
+      // No state? Maybe user refreshed → try localStorage
+      const saved = localStorage.getItem("lastTicket");
+      if (saved) {
+        this.ticket = JSON.parse(saved);
+      } else {
+        // Completely no data → redirect
+        this.router.navigate(['/home']);
+      }
+    }
+  }
+
+  /** Navigate to My Bookings */
+  MyBookings() {
+    this.router.navigate(['/my-bookings']);
+  }
+}
