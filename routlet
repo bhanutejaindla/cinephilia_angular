@@ -1,21 +1,18 @@
-<div class="dashboard-container">
+<div class="main-layout">
 
   <!-- FIXED SIDEBAR -->
-  <app-sidebar class="sidebar"></app-sidebar>
+  <app-sidebar-navigation></app-sidebar-navigation>
 
-  <!-- RIGHT SIDE CONTENT -->
-  <div class="main-section">
+  <div class="dashboard-content-area">
 
-    <!-- FIXED NAVBAR -->
-    <app-navbar class="navbar"></app-navbar>
+    <!-- FIXED HEADER -->
+    <app-dashboard-header></app-dashboard-header>
 
-    <!-- PAGE CONTENT: CHANGES ON ROUTE -->
-    <div class="content-wrapper">
-      <router-outlet></router-outlet>
-    </div>
+    <!-- CHILD ROUTES WILL LOAD HERE -->
+    <router-outlet></router-outlet>
 
-    <!-- FIXED FOOTER -->
-    <app-footer class="footer"></app-footer>
+    <!-- FIXED FOOTER (optional) -->
+    <!-- <app-footer></app-footer> -->
 
   </div>
 
