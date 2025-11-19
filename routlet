@@ -1,54 +1,76 @@
-<nav>
+<nav class="sidebar">
 
-  <a routerLink="/dashboard" routerLinkActive="active">
-    <mat-icon>dashboard</mat-icon> Dashboard
+  <a routerLink="/dashboard" routerLinkActive="active" class="menu-item">
+    <mat-icon>dashboard</mat-icon>
+    <span>Dashboard</span>
   </a>
 
-  <a routerLink="/dashboard/profile" routerLinkActive="active">
-    <mat-icon>person</mat-icon> Profile
+  <a routerLink="/dashboard/profile" routerLinkActive="active" class="menu-item">
+    <mat-icon>person</mat-icon>
+    <span>Profile</span>
   </a>
 
-  <a routerLink="/dashboard/services" routerLinkActive="active">
-    <mat-icon>build</mat-icon> Manage Services
+  <a routerLink="/dashboard/services" routerLinkActive="active" class="menu-item">
+    <mat-icon>build</mat-icon>
+    <span>Manage Services</span>
   </a>
 
-  <a routerLink="/dashboard/portfolio" routerLinkActive="active">
-    <mat-icon>photo</mat-icon> Portfolio
+  <a routerLink="/dashboard/portfolio" routerLinkActive="active" class="menu-item">
+    <mat-icon>photo</mat-icon>
+    <span>Portfolio</span>
   </a>
 
-  <a routerLink="/dashboard/bookings" routerLinkActive="active">
-    <mat-icon>book_online</mat-icon> My Bookings
+  <a routerLink="/dashboard/bookings" routerLinkActive="active" class="menu-item">
+    <mat-icon>book_online</mat-icon>
+    <span>My Bookings</span>
   </a>
 
 </nav>
 
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e5e5e5;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
 
-export const DASHBOARD_ROUTES: Routes = [
-  {
-    path: 'dashboard',
-    component: DashboardLayoutComponent,
-    children: [
-      { path: '', component: HomeComponent },   // your existing dashboard content
-      { path: 'profile', component: ProfileComponent },
-      { path: 'services', component: ServicesComponent },
-      { path: 'portfolio', component: PortfolioComponent },
-      { path: 'bookings', component: BookingsComponent },
-    ]
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #333333;
+  text-decoration: none;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  transition: all 0.2s ease-in-out;
+
+  mat-icon {
+    font-size: 20px;
+    color: #555;
   }
-];
+}
 
+/* Hover Effect */
+.menu-item:hover {
+  background: #f5f7fb;
+}
 
-<app-profile-completion-card [completionPercent]="60"></app-profile-completion-card>
+/* Active Route */
+.menu-item.active {
+  background: #e8f0fe;
+  color: #1976d2;
+  border-left: 4px solid #1976d2;
 
-<div class="dashboard-action-row">
-  <app-quick-actions></app-quick-actions>
-  <app-getting-started-guide></app-getting-started-guide>
-</div>
-
-<app-dashboard-stats
-    [bookings]="0"
-    [servicesListed]="2"
-    [earnings]="0"
-    [averageRating]="0.0">
-</app-dashboard-stats>
-
+  mat-icon {
+    color: #1976d2;
+  }
+}
