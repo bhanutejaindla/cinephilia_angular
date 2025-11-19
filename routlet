@@ -1,76 +1,48 @@
-<nav class="sidebar">
+.dashboard-layout {
+  display: flex;
+  height: 100vh;
+}
 
-  <a routerLink="/dashboard" routerLinkActive="active" class="menu-item">
-    <mat-icon>dashboard</mat-icon>
-    <span>Dashboard</span>
-  </a>
-
-  <a routerLink="/dashboard/profile" routerLinkActive="active" class="menu-item">
-    <mat-icon>person</mat-icon>
-    <span>Profile</span>
-  </a>
-
-  <a routerLink="/dashboard/services" routerLinkActive="active" class="menu-item">
-    <mat-icon>build</mat-icon>
-    <span>Manage Services</span>
-  </a>
-
-  <a routerLink="/dashboard/portfolio" routerLinkActive="active" class="menu-item">
-    <mat-icon>photo</mat-icon>
-    <span>Portfolio</span>
-  </a>
-
-  <a routerLink="/dashboard/bookings" routerLinkActive="active" class="menu-item">
-    <mat-icon>book_online</mat-icon>
-    <span>My Bookings</span>
-  </a>
-
-</nav>
-
+/* FIXED SIDEBAR */
 .sidebar {
   width: 240px;
-  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
   background: #ffffff;
-  border-right: 1px solid #e5e5e5;
-  padding: 20px 0;
+  border-right: 1px solid #ddd;
+}
+
+/* RIGHT AREA = Navbar + content */
+.right-section {
+  margin-left: 240px; /* IMPORTANT → push right section */
+  width: calc(100% - 240px);
   display: flex;
   flex-direction: column;
-  position: fixed;
-  left: 0;
-  top: 0;
+  height: 100vh;
 }
 
-.menu-item {
+/* FIXED NAVBAR */
+.navbar {
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  left: 240px; /* IMPORTANT → align next to sidebar */
+  right: 0;
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 14px 20px;
-  font-size: 15px;
-  font-weight: 500;
-  color: #333333;
-  text-decoration: none;
-  cursor: pointer;
-  border-left: 4px solid transparent;
-  transition: all 0.2s ease-in-out;
-
-  mat-icon {
-    font-size: 20px;
-    color: #555;
-  }
+  padding-left: 20px;
+  z-index: 10;
 }
 
-/* Hover Effect */
-.menu-item:hover {
-  background: #f5f7fb;
-}
-
-/* Active Route */
-.menu-item.active {
-  background: #e8f0fe;
-  color: #1976d2;
-  border-left: 4px solid #1976d2;
-
-  mat-icon {
-    color: #1976d2;
-  }
+/* PAGE CONTENT BELOW NAVBAR */
+.page-content {
+  margin-top: 60px; /* IMPORTANT → avoid navbar overlapping */
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100vh - 60px);
+  background: #fafafa;
 }
