@@ -20,3 +20,19 @@
   </div>
 
 </div>
+
+
+<app-profile-completion-card [completionPercent]="60"></app-profile-completion-card>
+
+<div class="dashboard-action-row">
+  <app-quick-actions></app-quick-actions>
+  <app-getting-started-guide></app-getting-started-guide>
+</div>
+
+<app-dashboard-stats
+    [bookings]="0"
+    [servicesListed]="2"
+    [earnings]="0"
+    [averageRating]="0.0">
+</app-dashboard-stats>
+
