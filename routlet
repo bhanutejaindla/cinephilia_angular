@@ -1,22 +1,27 @@
-<div class="main-layout">
+<nav>
 
-  <!-- FIXED SIDEBAR -->
-  <app-sidebar-navigation></app-sidebar-navigation>
+  <a routerLink="/dashboard" routerLinkActive="active">
+    <mat-icon>dashboard</mat-icon> Dashboard
+  </a>
 
-  <div class="dashboard-content-area">
+  <a routerLink="/dashboard/profile" routerLinkActive="active">
+    <mat-icon>person</mat-icon> Profile
+  </a>
 
-    <!-- FIXED HEADER -->
-    <app-dashboard-header></app-dashboard-header>
+  <a routerLink="/dashboard/services" routerLinkActive="active">
+    <mat-icon>build</mat-icon> Manage Services
+  </a>
 
-    <!-- CHILD ROUTES WILL LOAD HERE -->
-    <router-outlet></router-outlet>
+  <a routerLink="/dashboard/portfolio" routerLinkActive="active">
+    <mat-icon>photo</mat-icon> Portfolio
+  </a>
 
-    <!-- FIXED FOOTER (optional) -->
-    <!-- <app-footer></app-footer> -->
+  <a routerLink="/dashboard/bookings" routerLinkActive="active">
+    <mat-icon>book_online</mat-icon> My Bookings
+  </a>
 
-  </div>
+</nav>
 
-</div>
 
 export const DASHBOARD_ROUTES: Routes = [
   {
