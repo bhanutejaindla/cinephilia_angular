@@ -1,0 +1,280 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+
+// Material Imports
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDividerModule } from '@angular/material/divider';
+
+@Component({
+  selector: 'app-profile',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    MatChipsModule,
+    MatDividerModule
+  ],
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss']
+})
+export class ProfileComponent implements OnInit {
+
+  personalForm!: FormGroup;
+  addressForm!: FormGroup;
+
+  newArea: string = "";
+  areas: string[] = [];
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.personalForm = this.fb.group({
+      fullName: ['John Doe'],
+      phone: ['+91 98765 43210'],
+      email: ['john@example.com'],
+      bio: ['']
+    });
+
+    this.addressForm = this.fb.group({
+      street: [''],
+      city: [''],
+      state: [''],
+      pincode: ['400001']
+    });
+  }
+
+  addArea() {
+    if (this.newArea.trim() !== '') {
+      this.areas.push(this.newArea);
+      this.newArea = '';
+    }
+  }
+
+  removeArea(i: number) {
+    this.areas.splice(i, 1);
+  }
+}
+
+
+
+<div class="profile-page">
+
+  <div class="header-row">
+    <h2>My Profile</h2>
+    <button mat-flat-button color="primary">
+      <mat-icon>save</mat-icon>
+      Save Changes
+    </button>
+  </div>
+
+  <!-- =======================================
+       PROFILE PICTURE
+  ==========================================-->
+  <mat-card class="section">
+    <h3>Profile Picture</h3>
+    <p>Upload a professional photo to help customers recognize you</p>
+
+    <div class="photo-section">
+      <div class="avatar">
+        JD
+      </div>
+
+      <button mat-stroked-button color="primary">
+        <mat-icon>photo_camera</mat-icon>
+        Upload Photo
+      </button>
+    </div>
+
+    <small>JPG, PNG or GIF. Max size 2MB. Recommended 400×400px</small>
+  </mat-card>
+
+  <!-- =======================================
+       PERSONAL INFORMATION
+  ==========================================-->
+  <mat-card class="section">
+    <h3>Personal Information</h3>
+    <p>Your basic details visible to customers</p>
+
+    <form [formGroup]="personalForm">
+
+      <div class="row-2">
+        <mat-form-field appearance="outline">
+          <mat-label>Full Name *</mat-label>
+          <input matInput formControlName="fullName">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone Number *</mat-label>
+          <input matInput formControlName="phone">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Email Address *</mat-label>
+        <input matInput formControlName="email" disabled>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Bio / About You</mat-label>
+        <textarea matInput formControlName="bio" rows="4"></textarea>
+      </mat-form-field>
+
+    </form>
+  </mat-card>
+
+  <!-- =======================================
+       ADDRESS INFORMATION
+  ==========================================-->
+  <mat-card class="section">
+    <h3>Address Information</h3>
+    <p>Your primary business address</p>
+
+    <form [formGroup]="addressForm">
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Street Address</mat-label>
+        <input matInput formControlName="street">
+      </mat-form-field>
+
+      <div class="row-3">
+        <mat-form-field appearance="outline">
+          <mat-label>City *</mat-label>
+          <input matInput formControlName="city">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>State *</mat-label>
+          <input matInput formControlName="state">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pincode *</mat-label>
+          <input matInput formControlName="pincode">
+        </mat-form-field>
+      </div>
+
+    </form>
+  </mat-card>
+
+  <!-- =======================================
+       SERVICE AREAS
+  ==========================================-->
+  <mat-card class="section">
+    <h3>Service Areas</h3>
+    <p>Add postal codes or areas where you provide services</p>
+
+    <div class="row-2">
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Enter postal code or area</mat-label>
+        <input matInput [(ngModel)]="newArea">
+      </mat-form-field>
+
+      <button mat-stroked-button color="primary" (click)="addArea()">
+        <mat-icon>add_location</mat-icon>
+        Add Area
+      </button>
+    </div>
+
+    <div class="areas-list" *ngIf="areas.length > 0">
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let a of areas; let i = index" (removed)="removeArea(i)">
+          {{ a }}
+          <button matChipRemove>
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+
+    <div class="no-areas" *ngIf="areas.length === 0">
+      <mat-icon>location_off</mat-icon>
+      No service areas added yet
+    </div>
+  </mat-card>
+
+  <!-- BOTTOM BUTTONS -->
+  <div class="footer-buttons">
+    <button mat-button>Cancel</button>
+    <button mat-flat-button color="primary">
+      <mat-icon>save</mat-icon>
+      Save Changes
+    </button>
+  </div>
+
+</div>
+.profile-page {
+  padding: 20px;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section {
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.photo-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 15px 0;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.row-2, .row-3 {
+  display: flex;
+  gap: 20px;
+}
+
+.row-3 mat-form-field,
+.row-2 mat-form-field {
+  flex: 1;
+}
+
+.full {
+  width: 100%;
+}
+
+.areas-list {
+  margin-top: 10px;
+}
+
+.no-areas {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
+.footer-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
+}
