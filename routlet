@@ -1,73 +1,125 @@
-.dashboard-layout {
-  display: flex;
-  height: 100vh;
-}
+<div class="registration-header">
 
-/* FIXED SIDEBAR */
-.sidebar {
-  width: 240px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  background: #ffffff;
-  border-right: 1px solid #ddd;
-}
+  <button class="back-btn" (click)="prevStep()" *ngIf="step > 1">← Back</button>
 
-/* RIGHT AREA = Navbar + content */
-.right-section {
-  margin-left: 240px; /* IMPORTANT → push right section */
-  width: calc(100% - 240px);
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-/* FIXED NAVBAR */
-.navbar {
-  height: 60px;
-  background: white;
-  border-bottom: 1px solid #ddd;
-  position: fixed;
-  top: 0;
-  left: 240px; /* IMPORTANT → align next to sidebar */
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-  z-index: 10;
-}
-
-/* PAGE CONTENT BELOW NAVBAR */
-.page-content {
-  margin-top: 60px; /* IMPORTANT → avoid navbar overlapping */
-  padding: 20px;
-  overflow-y: auto;
-  height: calc(100vh - 60px);
-  background: #fafafa;
-}
-
-
-<div class="dashboard-layout">
-
-  <!-- FIXED SIDEBAR -->
-  <app-sidebar-navigation class="sidebar"></app-sidebar-navigation>
-
-  <!-- RIGHT SECTION -->
-  <div class="right-section">
-
-    <!-- FIXED NAVBAR -->
-    <app-navbar class="navbar"></app-navbar>
-
-    <!-- PAGE CONTENT -->
-    <div class="page-content">
-      <router-outlet></router-outlet>
+  <div class="stepper">
+    <div class="step-info">
+      Step {{ step }} of 3
     </div>
 
-    <!-- OPTIONAL FOOTER -->
-    <!-- <app-footer></app-footer> -->
 
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="step * 33"></div>
+    </div>
+
+    <div class="step-labels">
+      <span [class.active]="step === 1">1 Basic Info</span>
+      <span [class.active]="step === 2">2 Categories</span>
+      <span [class.active]="step === 3">3 Services</span>
+    </div>
+  </div>
+
+  <div class="completion-text">
+    {{ step * 33 }}% Complete
   </div>
 
 </div>
 
+
+
+
+.registration-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  border-bottom: 2px solid #f2f2f2;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #444;
+}
+
+.stepper {
+  flex: 1;
+  padding: 0 40px;
+}
+
+.step-info {
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #444;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: #e5e5e5;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 4px;
+  background: #ff7f32; /* Urban Company orange */
+  transition: width 0.3s ease;
+}
+
+.step-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+
+  span {
+    font-size: 14px;
+    color: #888;
+  }
+
+  .active {
+    color: #ff7f32;
+    font-weight: bold;
+  }
+}
+
+.completion-text {
+  font-size: 14px;
+  color: #444;
+  font-weight: 500;
+}
+
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-provider-registration',
+  templateUrl: './provider-registration.component.html',
+  styleUrls: ['./provider-registration.component.scss']
+})
+export class ProviderRegistrationComponent {
+
+  step: number = 1;
+  registrationData: any = {};
+
+  nextStep(data: any) {
+    this.registrationData = { ...this.registrationData, ...data };
+    if (this.step < 3) {
+      this.step++;
+    }
+  }
+
+  prevStep() {
+    if (this.step > 1) {
+      this.step--;
+    }
+  }
+
+  onFinalSubmit(data: any) {
+    this.registrationData.services = data;
+    console.log('FINAL DATA:', this.registrationData);
+  }
+
+}
