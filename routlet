@@ -46,3 +46,28 @@
   height: calc(100vh - 60px);
   background: #fafafa;
 }
+
+
+<div class="dashboard-layout">
+
+  <!-- FIXED SIDEBAR -->
+  <app-sidebar-navigation class="sidebar"></app-sidebar-navigation>
+
+  <!-- RIGHT SECTION -->
+  <div class="right-section">
+
+    <!-- FIXED NAVBAR -->
+    <app-navbar class="navbar"></app-navbar>
+
+    <!-- PAGE CONTENT -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- OPTIONAL FOOTER -->
+    <!-- <app-footer></app-footer> -->
+
+  </div>
+
+</div>
+
