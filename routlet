@@ -1,0 +1,22 @@
+<div class="dashboard-container">
+
+  <!-- FIXED SIDEBAR -->
+  <app-sidebar class="sidebar"></app-sidebar>
+
+  <!-- RIGHT SIDE CONTENT -->
+  <div class="main-section">
+
+    <!-- FIXED NAVBAR -->
+    <app-navbar class="navbar"></app-navbar>
+
+    <!-- PAGE CONTENT: CHANGES ON ROUTE -->
+    <div class="content-wrapper">
+      <router-outlet></router-outlet>
+    </div>
+
+    <!-- FIXED FOOTER -->
+    <app-footer class="footer"></app-footer>
+
+  </div>
+
+</div>
