@@ -18,6 +18,20 @@
 
 </div>
 
+export const DASHBOARD_ROUTES: Routes = [
+  {
+    path: 'dashboard',
+    component: DashboardLayoutComponent,
+    children: [
+      { path: '', component: HomeComponent },   // your existing dashboard content
+      { path: 'profile', component: ProfileComponent },
+      { path: 'services', component: ServicesComponent },
+      { path: 'portfolio', component: PortfolioComponent },
+      { path: 'bookings', component: BookingsComponent },
+    ]
+  }
+];
+
 
 <app-profile-completion-card [completionPercent]="60"></app-profile-completion-card>
 
