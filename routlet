@@ -1,3 +1,259 @@
+
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+
+@Component({
+  selector: 'app-earnings',
+  standalone: true,
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatDividerModule
+  ],
+  templateUrl: './earnings.component.html',
+  styleUrls: ['./earnings.component.scss']
+})
+export class EarningsComponent {
+  totalEarnings = 45230;
+  availableBalance = 12450;
+  pendingPayment = 3200;
+  lastPayout = 8500;
+
+  transactions = [
+    {
+      title: 'Bathroom Deep Cleaning',
+      customer: 'Priya Sharma',
+      date: '20/12/2025',
+      status: 'Completed',
+      amount: 899
+    }
+  ];
+}
+
+<div class="earnings-page">
+
+  <div class="header">
+    <h2>Earnings & Payouts</h2>
+    <p>Track your earnings and manage payouts</p>
+  </div>
+
+  <!-- Earnings Stats -->
+  <div class="stats-grid">
+
+    <mat-card class="stat-card">
+      <div class="stat-value">₹{{ totalEarnings }}</div>
+      <div class="stat-label">Total Earnings</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-value">₹{{ availableBalance }}</div>
+      <div class="stat-label">Available Balance</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-value">₹{{ pendingPayment }}</div>
+      <div class="stat-label">Pending Payment</div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-value">₹{{ lastPayout }}</div>
+      <div class="stat-label">Last Payout</div>
+    </mat-card>
+
+  </div>
+
+  <!-- Request Payout Section -->
+  <mat-card class="payout-card">
+    <h3>Request Payout</h3>
+    <p>Transfer your available balance to your bank account</p>
+
+    <div class="amount-box">
+      ₹{{ availableBalance }}
+    </div>
+
+    <button mat-flat-button color="primary" class="payout-btn">
+      Request Payout
+    </button>
+  </mat-card>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <div class="tab active">Transaction History</div>
+    <div class="tab">Payout History</div>
+  </div>
+
+  <!-- Transaction List -->
+  <div class="transactions">
+
+    <h3>Transaction History</h3>
+    <p>All your earnings and payouts in chronological order</p>
+
+    <div *ngFor="let t of transactions" class="transaction-item">
+      
+      <div class="left-section">
+        <mat-icon class="service-icon">cleaning_services</mat-icon>
+
+        <div>
+          <div class="service-title">{{ t.title }}</div>
+          <div class="service-customer">{{ t.customer }}</div>
+
+          <div class="service-meta">
+            <mat-icon>calendar_today</mat-icon>
+            <span>{{ t.date }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-section">
+        <span class="status completed">{{ t.status }}</span>
+        <span class="amount">+₹{{ t.amount }}</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+.earnings-page {
+  padding: 20px;
+}
+
+/* Header */
+.header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.stat-label {
+  margin-top: 6px;
+  color: #666;
+}
+
+/* Payout Card */
+.payout-card {
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+}
+
+.amount-box {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0 20px;
+}
+
+.payout-btn {
+  width: 100%;
+  height: 46px;
+  background: black !important;
+  color: white !important;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #ddd;
+  margin-top: 30px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  color: #777;
+  font-weight: 500;
+}
+
+.tab.active {
+  border-bottom: 3px solid black;
+  color: black;
+}
+
+/* Transaction List */
+.transactions {
+  margin-top: 20px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 10px;
+  background: #fff;
+  margin-bottom: 12px;
+  border: 1px solid #eee;
+}
+
+.left-section {
+  display: flex;
+  gap: 16px;
+}
+
+.service-icon {
+  font-size: 32px;
+  color: #4CAF50;
+}
+
+.service-title {
+  font-weight: 600;
+}
+
+.service-customer {
+  font-size: 14px;
+  color: #555;
+}
+
+.service-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #777;
+}
+
+.status.completed {
+  background: #e0f7e9;
+  color: #2e7d32;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-right: 10px;
+}
+
+.amount {
+  font-size: 18px;
+  font-weight: bold;
+  color: #008000;
+}
+
 <div class="registration-header">
 
   <button class="back-btn" (click)="prevStep()" *ngIf="step > 1">← Back</button>
